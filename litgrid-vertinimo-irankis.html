@@ -7,528 +7,265 @@
 <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@300;400;600;700;800&display=swap" rel="stylesheet">
 <style>
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
 :root {
-  --color-emerald:     #00A072;
-  --color-emerald-50:  #16C492;
-  --color-emerald-120: #128A76;
-  --color-emerald-15:  #C2E8DC;
-  --color-emerald-5:   #E6F7F2;
+  --em: #00A072; --em50: #16C492; --em120: #128A76;
+  --em15: #C2E8DC; --em5: #E6F7F2;
+  --gr: #2E3641; --gr50: #737483; --gr30: #C7CDD3; --gr15: #E1E2E4; --gr5: #EFF1F1;
+  --gn15: #D7EEDB; --gn5: #EFF9F1; --cy5: #E8F7F9;
+  --wh: #FFFFFF; --err: #DB354A; --err5: rgba(219,53,74,0.07);
+  --wrn: #FAB03B; --wrn5: rgba(250,176,59,0.08);
+  --fn: "Nunito Sans", Arial, sans-serif;
+  --r8: 8px; --r12: 12px;
+  --sh: 0 2px 12px rgba(46,54,65,0.07);
+  --tr: 180ms ease;
+}
+body { font-family: var(--fn); background: var(--gr5); color: var(--gr); font-size: 15px; line-height: 1.55; }
 
-  --color-graphite:    #2E3641;
-  --color-graphite-50: #737483;
-  --color-graphite-30: #C7CDD3;
-  --color-graphite-15: #E1E2E4;
-  --color-graphite-5:  #EFF1F1;
+/* HEADER */
+.header { background: var(--wh); border-bottom: 2px solid var(--em); position: sticky; top: 0; z-index: 100; box-shadow: 0 1px 8px rgba(46,54,65,0.06); }
+.header-inner { max-width: 1400px; margin: 0 auto; padding: 0 32px; display: flex; align-items: center; justify-content: space-between; height: 56px; }
+.logo-wrap { display: flex; align-items: center; gap: 14px; }
+.logo-mark { width: 32px; height: 32px; background: var(--em); border-radius: 6px; display: flex; align-items: center; justify-content: center; }
+.logo-name { font-size: 17px; font-weight: 800; color: var(--gr); letter-spacing: .02em; }
+.logo-sep { width: 1px; height: 20px; background: var(--gr15); }
+.header-sub { font-size: 13px; color: var(--gr50); }
+.hright { display: flex; align-items: center; gap: 8px; }
+.hbadge { font-size: 11px; font-weight: 700; background: var(--gn5); color: var(--em120); border: 1px solid var(--em15); padding: 3px 10px; border-radius: 20px; letter-spacing: .04em; }
+.btn-proto { display: flex; align-items: center; gap: 6px; background: var(--em); color: var(--wh); border: none; border-radius: var(--r8); padding: 7px 16px; font-size: 13px; font-weight: 700; cursor: pointer; font-family: var(--fn); transition: background var(--tr); }
+.btn-proto:hover { background: var(--em120); }
 
-  --color-green-15:    #D7EEDB;
-  --color-green-5:     #EFF9F1;
-  --color-cyan-5:      #E8F7F9;
+/* CONTAINER */
+.container { max-width: 1400px; margin: 0 auto; padding: 24px 32px 60px; }
 
-  --color-white:       #FFFFFF;
-  --color-error:       #DB354A;
-  --color-error-5:     rgba(219,53,74,0.07);
-  --color-warning:     #FAB03B;
-  --color-warning-5:   rgba(250,176,59,0.08);
-
-  --font-base: "Nunito Sans", Arial, sans-serif;
-  --radius-sm: 8px;
-  --radius-md: 12px;
-  --space-1: 8px;
-  --space-2: 16px;
-  --space-3: 24px;
-  --space-4: 32px;
-  --container-max: 1280px;
-  --shadow-subtle: 0 2px 12px rgba(46,54,65,0.07);
-  --transition: 180ms ease;
-}
-
-body {
-  font-family: var(--font-base);
-  background: var(--color-graphite-5);
-  color: var(--color-graphite);
-  font-size: 15px;
-  line-height: 1.55;
-  min-height: 100vh;
-}
-
-/* ── HEADER ── */
-.header {
-  background: var(--color-white);
-  border-bottom: 2px solid var(--color-emerald);
-  position: sticky; top: 0; z-index: 100;
-  box-shadow: 0 1px 8px rgba(46,54,65,0.06);
-}
-.header-inner {
-  max-width: var(--container-max);
-  margin: 0 auto;
-  padding: 0 var(--space-4);
-  display: flex; align-items: center; justify-content: space-between;
-  height: 56px;
-}
-.logo-wrap { display: flex; align-items: center; gap: var(--space-2); }
-.logo-mark {
-  width: 32px; height: 32px;
-  background: var(--color-emerald);
-  border-radius: 6px;
-  display: flex; align-items: center; justify-content: center;
-}
-.logo-mark svg { width: 18px; height: 18px; }
-.logo-name {
-  font-size: 17px; font-weight: 800;
-  color: var(--color-graphite); letter-spacing: 0.02em;
-}
-.logo-sep { width: 1px; height: 20px; background: var(--color-graphite-15); }
-.header-subtitle { font-size: 13px; color: var(--color-graphite-50); font-weight: 400; }
-.header-right { display: flex; align-items: center; gap: var(--space-1); }
-.hbadge {
-  font-size: 11px; font-weight: 700;
-  background: var(--color-green-5);
-  color: var(--color-emerald-120);
-  border: 1px solid var(--color-emerald-15);
-  padding: 3px 10px; border-radius: 20px;
-  letter-spacing: 0.04em;
-}
-.btn-proto {
-  display: flex; align-items: center; gap: 6px;
-  background: var(--color-emerald);
-  color: var(--color-white);
-  border: none; border-radius: var(--radius-sm);
-  padding: 7px 16px; font-size: 13px; font-weight: 700;
-  cursor: pointer; font-family: var(--font-base);
-  transition: background var(--transition);
-}
-.btn-proto:hover { background: var(--color-emerald-120); }
-
-/* ── CONTAINER ── */
-.container { max-width: var(--container-max); margin: 0 auto; padding: var(--space-3) var(--space-4) var(--space-6); }
-
-/* ── PIRKIMO INFO ── */
-.pirkimo-info {
-  background: var(--color-white);
-  border: 1px solid var(--color-graphite-15);
-  border-radius: var(--radius-md);
-  padding: var(--space-3);
-  margin-bottom: var(--space-3);
-  display: flex; gap: var(--space-3); align-items: flex-end;
-  box-shadow: var(--shadow-subtle);
-}
+/* PIRKIMO INFO */
+.pi-bar { background: var(--wh); border: 1px solid var(--gr15); border-radius: var(--r12); padding: 16px 22px; margin-bottom: 20px; display: flex; gap: 24px; align-items: flex-end; box-shadow: var(--sh); }
 .pi-field { display: flex; flex-direction: column; gap: 5px; flex: 1; }
 .pi-field.narrow { max-width: 200px; }
-.pi-label {
-  font-size: 11px; font-weight: 700;
-  text-transform: uppercase; letter-spacing: 0.08em;
-  color: var(--color-graphite-50);
-}
-.pi-input {
-  border: 1px solid var(--color-graphite-15);
-  border-radius: var(--radius-sm);
-  padding: 8px 12px;
-  font-family: var(--font-base); font-size: 14px; font-weight: 600;
-  color: var(--color-graphite); background: var(--color-white);
-  outline: none; transition: border-color var(--transition);
-  width: 100%;
-}
-.pi-input:focus { border-color: var(--color-emerald); }
-.pi-input::placeholder { font-weight: 400; color: var(--color-graphite-30); }
+.pi-lbl { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .08em; color: var(--gr50); }
+.pi-input { border: 1px solid var(--gr15); border-radius: var(--r8); padding: 8px 12px; font-family: var(--fn); font-size: 14px; font-weight: 600; color: var(--gr); background: var(--wh); outline: none; transition: border-color var(--tr); width: 100%; }
+.pi-input:focus { border-color: var(--em); }
+.pi-input::placeholder { font-weight: 400; color: var(--gr30); }
 
-/* ── CRITERIA BAR ── */
-.criteria-section { margin-bottom: var(--space-3); }
-.criteria-section-header {
-  display: flex; align-items: center; justify-content: space-between;
-  margin-bottom: var(--space-2);
-}
-.criteria-section-title { font-size: 13px; font-weight: 700; color: var(--color-graphite-50); text-transform: uppercase; letter-spacing: 0.07em; }
-.criteria-sum-display {
-  font-size: 13px; font-weight: 700; font-family: monospace;
-  padding: 4px 12px; border-radius: 20px;
-}
-.criteria-sum-display.ok { background: var(--color-green-5); color: var(--color-emerald-120); border: 1px solid var(--color-emerald-15); }
-.criteria-sum-display.warn { background: var(--color-warning-5); color: #8a5c00; border: 1px solid rgba(250,176,59,0.3); }
+/* CRITERIA */
+.crit-section { margin-bottom: 20px; }
+.crit-sec-hdr { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; }
+.crit-sec-title { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: .07em; color: var(--gr50); }
+.sum-badge { font-size: 13px; font-weight: 700; padding: 4px 12px; border-radius: 20px; }
+.sum-ok { background: var(--gn5); color: var(--em120); border: 1px solid var(--em15); }
+.sum-warn { background: var(--wrn5); color: #8a5c00; border: 1px solid rgba(250,176,59,.3); }
+.crit-grid { display: grid; grid-template-columns: repeat(6,1fr); gap: 9px; }
+.cc { background: var(--wh); border: 1px solid var(--gr15); border-top: 3px solid var(--em); border-radius: var(--r8); padding: 13px 14px; box-shadow: var(--sh); }
+.cc.cc-price { border-top-color: var(--em); }
+.cc.over { border-top-color: var(--err); }
+.cc-lbl { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .1em; color: var(--gr50); margin-bottom: 3px; }
+.cc-name { font-size: 12px; font-weight: 700; color: var(--gr); margin-bottom: 8px; line-height: 1.3; }
+.cc-pts-wrap { display: flex; align-items: center; gap: 6px; margin-bottom: 3px; }
+.cc-pts-input { width: 48px; border: 1px solid var(--gr15); border-radius: 5px; padding: 4px 5px; font-family: var(--fn); font-size: 19px; font-weight: 800; color: var(--em); text-align: center; outline: none; background: var(--gn5); transition: border-color var(--tr); }
+.cc-pts-input:focus { border-color: var(--em); }
+.cc-pts-unit { font-size: 12px; color: var(--gr50); }
+.cc-note { font-size: 10px; color: var(--gr50); line-height: 1.4; }
+.cc-note.danger { color: var(--err); font-weight: 700; }
 
-.criteria-bar { display: grid; grid-template-columns: repeat(5,1fr); gap: 10px; }
-.crit-card {
-  background: var(--color-white);
-  border: 1px solid var(--color-graphite-15);
-  border-top: 3px solid var(--color-emerald);
-  border-radius: var(--radius-sm);
-  padding: 14px;
-  box-shadow: var(--shadow-subtle);
-}
-.crit-card.over { border-top-color: var(--color-error); }
-.cc-label { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: var(--color-graphite-50); margin-bottom: 3px; }
-.cc-name { font-size: 13px; font-weight: 700; color: var(--color-graphite); margin-bottom: 8px; }
-.cc-pts-wrap { display: flex; align-items: center; gap: 6px; margin-bottom: 4px; }
-.cc-pts-input {
-  width: 52px;
-  border: 1px solid var(--color-graphite-15);
-  border-radius: 6px;
-  padding: 4px 6px;
-  font-family: var(--font-base); font-size: 20px; font-weight: 800;
-  color: var(--color-emerald); text-align: center;
-  outline: none; transition: border-color var(--transition);
-  background: var(--color-green-5);
-}
-.cc-pts-input:focus { border-color: var(--color-emerald); }
-.cc-pts-unit { font-size: 12px; color: var(--color-graphite-50); }
-.cc-note { font-size: 10px; color: var(--color-graphite-50); margin-top: 2px; line-height: 1.4; }
-.cc-note.danger { color: var(--color-error); font-weight: 600; }
-
-/* ── RISK PANEL ── */
-.risk-panel {
-  border-radius: var(--radius-sm);
-  padding: 14px 18px;
-  margin-bottom: var(--space-3);
-  border: 1px solid;
-  display: none;
-}
-.risk-panel.visible { display: block; }
-.risk-panel.ok { background: var(--color-green-5); border-color: var(--color-emerald-15); }
-.risk-panel.warn { background: var(--color-warning-5); border-color: rgba(250,176,59,0.3); }
-.risk-panel.crit { background: var(--color-error-5); border-color: rgba(219,53,74,0.2); }
-.rp-hdr { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
-.rp-icon { font-size: 15px; }
+/* RISK */
+.risk-panel { border-radius: var(--r8); padding: 13px 17px; margin-bottom: 20px; border: 1px solid; display: none; }
+.risk-panel.vis { display: block; }
+.risk-panel.ok { background: var(--gn5); border-color: var(--em15); }
+.risk-panel.warn { background: var(--wrn5); border-color: rgba(250,176,59,.3); }
+.risk-panel.crit { background: var(--err5); border-color: rgba(219,53,74,.2); }
+.rp-hdr { display: flex; align-items: center; gap: 8px; margin-bottom: 7px; }
 .rp-title { font-size: 13px; font-weight: 700; }
-.risk-panel.ok .rp-title { color: var(--color-emerald-120); }
+.risk-panel.ok .rp-title { color: var(--em120); }
 .risk-panel.warn .rp-title { color: #8a5c00; }
-.risk-panel.crit .rp-title { color: var(--color-error); }
+.risk-panel.crit .rp-title { color: var(--err); }
 .rp-items { display: flex; flex-direction: column; gap: 5px; }
-.rp-item { display: flex; align-items: flex-start; gap: 8px; font-size: 13px; line-height: 1.5; }
+.rp-item { display: flex; align-items: flex-start; gap: 7px; font-size: 13px; line-height: 1.5; }
 .rp-dot { width: 5px; height: 5px; border-radius: 50%; flex-shrink: 0; margin-top: 6px; }
-.risk-panel.warn .rp-dot { background: var(--color-warning); }
-.risk-panel.crit .rp-dot { background: var(--color-error); }
+.risk-panel.warn .rp-dot { background: var(--wrn); }
+.risk-panel.crit .rp-dot { background: var(--err); }
 
-/* ── SECTION HEAD ── */
-.section-head { display: flex; align-items: flex-end; justify-content: space-between; margin-bottom: var(--space-2); }
-.section-title { font-size: 18px; font-weight: 800; color: var(--color-graphite); }
-.section-sub { font-size: 13px; color: var(--color-graphite-50); margin-top: 2px; }
-.btn-add {
-  display: flex; align-items: center; gap: 6px;
-  background: var(--color-white);
-  color: var(--color-emerald);
-  border: 1.5px solid var(--color-emerald);
-  border-radius: var(--radius-sm);
-  padding: 8px 16px; font-size: 13px; font-weight: 700;
-  cursor: pointer; font-family: var(--font-base);
-  transition: all var(--transition); white-space: nowrap;
-}
-.btn-add:hover { background: var(--color-green-5); }
+/* SECTION */
+.sec-hdr { display: flex; align-items: flex-end; justify-content: space-between; margin-bottom: 12px; }
+.sec-title { font-size: 18px; font-weight: 800; color: var(--gr); }
+.sec-sub { font-size: 13px; color: var(--gr50); margin-top: 2px; }
+.btn-add { display: flex; align-items: center; gap: 6px; background: var(--wh); color: var(--em); border: 1.5px solid var(--em); border-radius: var(--r8); padding: 8px 16px; font-size: 13px; font-weight: 700; cursor: pointer; font-family: var(--fn); transition: all var(--tr); white-space: nowrap; }
+.btn-add:hover { background: var(--gn5); }
 
-/* ── SUPPLIER CARDS ── */
-.suppliers-grid { display: flex; flex-direction: column; gap: 10px; margin-bottom: var(--space-3); }
-.sup-card {
-  background: var(--color-white);
-  border: 1px solid var(--color-graphite-15);
-  border-radius: var(--radius-md);
-  overflow: hidden;
-  box-shadow: var(--shadow-subtle);
-  transition: box-shadow var(--transition);
-}
-.sup-card:hover { box-shadow: 0 4px 20px rgba(46,54,65,0.1); }
-.sup-card.rejected { border-color: rgba(219,53,74,0.25); background: #fffbfb; }
-.sup-card.winner { border-color: var(--color-emerald); border-width: 1.5px; }
-
-.sup-head {
-  display: flex; align-items: center; gap: 12px;
-  padding: 12px var(--space-3);
-  background: var(--color-graphite-5);
-  border-bottom: 1px solid var(--color-graphite-15);
-}
-.sup-num {
-  width: 28px; height: 28px; border-radius: 6px;
-  background: var(--color-emerald); color: white;
-  font-size: 13px; font-weight: 800;
-  display: flex; align-items: center; justify-content: center;
-  flex-shrink: 0;
-}
-.sup-card.rejected .sup-num { background: var(--color-error); }
-.sup-name-input {
-  border: none; background: transparent;
-  font-family: var(--font-base); font-size: 15px; font-weight: 700;
-  color: var(--color-graphite); flex: 1; outline: none; min-width: 0;
-  transition: color var(--transition);
-}
-.sup-name-input:focus { color: var(--color-emerald); }
-.sup-name-input::placeholder { font-weight: 400; color: var(--color-graphite-30); }
+/* SUPPLIER CARDS */
+.sup-grid { display: flex; flex-direction: column; gap: 10px; margin-bottom: 20px; }
+.sup-card { background: var(--wh); border: 1px solid var(--gr15); border-radius: var(--r12); overflow: hidden; box-shadow: var(--sh); transition: box-shadow var(--tr); }
+.sup-card:hover { box-shadow: 0 4px 20px rgba(46,54,65,.1); }
+.sup-card.rejected { border-color: rgba(219,53,74,.25); background: #fffbfb; }
+.sup-card.winner { border-color: var(--em); border-width: 1.5px; }
+.sup-head { display: flex; align-items: center; gap: 12px; padding: 11px 22px; background: var(--gr5); border-bottom: 1px solid var(--gr15); }
+.sup-num { width: 28px; height: 28px; border-radius: 6px; background: var(--em); color: white; font-size: 13px; font-weight: 800; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.sup-card.rejected .sup-num { background: var(--err); }
+.sup-name-input { border: none; background: transparent; font-family: var(--fn); font-size: 15px; font-weight: 700; color: var(--gr); flex: 1; outline: none; min-width: 0; transition: color var(--tr); }
+.sup-name-input:focus { color: var(--em); }
+.sup-name-input::placeholder { font-weight: 400; color: var(--gr30); }
 .sup-tags { display: flex; align-items: center; gap: 6px; margin-left: auto; flex-shrink: 0; }
-.stag {
-  font-size: 11px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase;
-  padding: 3px 8px; border-radius: 20px;
-}
-.stag-win { background: var(--color-green-5); color: var(--color-emerald-120); border: 1px solid var(--color-emerald-15); }
-.stag-rej { background: var(--color-error-5); color: var(--color-error); border: 1px solid rgba(219,53,74,0.2); }
-.stag-low { background: var(--color-warning-5); color: #8a5c00; border: 1px solid rgba(250,176,59,0.3); }
-.rm-btn {
-  width: 26px; height: 26px; border-radius: 6px;
-  background: transparent; border: 1px solid var(--color-graphite-15);
-  cursor: pointer; color: var(--color-graphite-50);
-  display: flex; align-items: center; justify-content: center;
-  font-size: 16px; line-height: 1; transition: all var(--transition); flex-shrink: 0;
-}
-.rm-btn:hover { background: var(--color-error-5); border-color: rgba(219,53,74,0.25); color: var(--color-error); }
+.stag { font-size: 11px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; padding: 3px 8px; border-radius: 20px; }
+.stag-win { background: var(--gn5); color: var(--em120); border: 1px solid var(--em15); }
+.stag-rej { background: var(--err5); color: var(--err); border: 1px solid rgba(219,53,74,.2); }
+.stag-low { background: var(--wrn5); color: #8a5c00; border: 1px solid rgba(250,176,59,.3); }
+.rm-btn { width: 26px; height: 26px; border-radius: 6px; background: transparent; border: 1px solid var(--gr15); cursor: pointer; color: var(--gr50); display: flex; align-items: center; justify-content: center; font-size: 16px; transition: all var(--tr); flex-shrink: 0; }
+.rm-btn:hover { background: var(--err5); border-color: rgba(219,53,74,.25); color: var(--err); }
 
-.sup-body {
-  padding: var(--space-2) var(--space-3);
-  display: grid;
-  grid-template-columns: 2fr 1fr 1fr 1fr 1fr;
-  gap: var(--space-2);
-  align-items: start;
-}
+/* SUP BODY */
+.sup-body { padding: 14px 22px; display: grid; grid-template-columns: 1fr 1fr 1fr 1.15fr 0.85fr 0.85fr; gap: 13px; align-items: start; }
 
-/* PRICE BLOCK */
-.price-block {
-  background: var(--color-green-5);
-  border: 1px solid var(--color-graphite-15);
-  border-radius: var(--radius-sm);
-  padding: 13px;
-}
-.pb-title { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.07em; color: var(--color-graphite-50); margin-bottom: 10px; }
-.pb-stage-lbl { font-size: 12px; font-weight: 700; color: var(--color-graphite); display: flex; align-items: center; gap: 6px; margin-bottom: 4px; }
-.sb { font-size: 10px; padding: 1px 6px; border-radius: 4px; font-weight: 700; }
-.sb1 { background: var(--color-cyan-5); color: #00667D; }
-.sb2 { background: var(--color-green-15); color: var(--color-emerald-120); }
-.price-input {
-  width: 100%; border: 1px solid var(--color-graphite-15); border-radius: 6px;
-  padding: 7px 10px; font-family: var(--font-base); font-size: 13px; font-weight: 600;
-  color: var(--color-graphite); background: var(--color-white); outline: none;
-  transition: border-color var(--transition); text-align: right;
-}
-.price-input:focus { border-color: var(--color-emerald); }
-.coef-note { font-size: 11px; color: var(--color-graphite-50); margin-top: 2px; text-align: right; }
-.pdiv { height: 1px; background: var(--color-graphite-15); margin: 9px 0; }
-.wp-row { display: flex; justify-content: space-between; align-items: flex-start; }
-.wp-lbl { font-size: 11px; color: var(--color-graphite-50); line-height: 1.4; }
-.wp-val { font-size: 13px; font-weight: 700; color: var(--color-graphite); }
-.dev-inline {
-  display: flex; justify-content: space-between; align-items: center;
-  margin-top: 5px; padding: 4px 8px; border-radius: 5px;
-  font-size: 11px; font-weight: 700;
-}
-.dev-low { background: var(--color-warning-5); color: #8a5c00; }
-.dev-high { background: var(--color-error-5); color: var(--color-error); }
-.dev-norm { background: var(--color-green-5); color: var(--color-emerald-120); }
-.a-row {
-  display: flex; justify-content: space-between; align-items: center;
-  margin-top: 7px; background: var(--color-emerald); border-radius: 6px; padding: 5px 10px;
-}
-.a-lbl { font-size: 11px; color: rgba(255,255,255,0.7); }
-.a-val { font-size: 15px; font-weight: 800; color: white; }
+/* PRICE CRITERION BLOCK */
+.price-crit { background: var(--gn5); border: 1px solid var(--gr15); border-radius: var(--r8); padding: 12px; display: flex; flex-direction: column; gap: 5px; }
+.price-crit-title { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .08em; color: var(--gr50); margin-bottom: 3px; }
+.price-input { width: 100%; border: 1px solid var(--gr15); border-radius: 6px; padding: 7px 10px; font-family: var(--fn); font-size: 13px; font-weight: 600; color: var(--gr); background: var(--wh); outline: none; transition: border-color var(--tr); text-align: right; }
+.price-input:focus { border-color: var(--em); }
+.price-note { font-size: 11px; color: var(--gr50); text-align: right; }
+.pdiv { height: 1px; background: var(--gr15); margin: 4px 0; }
+.score-bar { display: flex; justify-content: space-between; align-items: center; background: var(--em); border-radius: 6px; padding: 5px 10px; margin-top: 3px; }
+.score-bar-lbl { font-size: 11px; color: rgba(255,255,255,.7); }
+.score-bar-val { font-size: 15px; font-weight: 800; color: white; }
 
-/* CRIT BLOCKS */
+/* CRIT BLOCK */
 .crit-block { display: flex; flex-direction: column; gap: 5px; }
-.cb-lbl { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--color-graphite-50); }
-.cb-name { font-size: 12px; font-weight: 700; color: var(--color-graphite); margin-bottom: 3px; }
-.crit-select {
-  width: 100%; border: 1px solid var(--color-graphite-15); border-radius: 6px;
-  padding: 7px 10px; font-family: var(--font-base); font-size: 13px;
-  color: var(--color-graphite); background: var(--color-white); outline: none; cursor: pointer;
-  transition: border-color var(--transition);
-}
-.crit-select:focus { border-color: var(--color-emerald); }
+.cb-lbl { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .08em; color: var(--gr50); }
+.cb-name { font-size: 12px; font-weight: 700; color: var(--gr); margin-bottom: 3px; }
+.crit-select { width: 100%; border: 1px solid var(--gr15); border-radius: 6px; padding: 7px 10px; font-family: var(--fn); font-size: 12px; color: var(--gr); background: var(--wh); outline: none; cursor: pointer; transition: border-color var(--tr); }
+.crit-select:focus { border-color: var(--em); }
 .toggle-wrap { display: flex; gap: 5px; }
-.tbtn {
-  flex: 1; padding: 7px 4px;
-  border: 1px solid var(--color-graphite-15); border-radius: 6px;
-  font-size: 12px; font-weight: 700; cursor: pointer;
-  font-family: var(--font-base); transition: all var(--transition);
-  background: var(--color-white); color: var(--color-graphite-50);
-}
-.tbtn.yes.on { background: var(--color-green-5); border-color: var(--color-emerald-15); color: var(--color-emerald-120); }
-.tbtn.no.on { background: var(--color-error-5); border-color: rgba(219,53,74,0.2); color: var(--color-error); }
-.iv-input {
-  width: 100%; border: 1px solid var(--color-graphite-15); border-radius: 6px;
-  padding: 7px 10px; font-family: var(--font-base); font-size: 13px; font-weight: 600;
-  color: var(--color-graphite); background: var(--color-white); outline: none; text-align: center;
-  transition: border-color var(--transition);
-}
-.iv-input:focus { border-color: var(--color-emerald); }
-.iv-range { width: 100%; accent-color: var(--color-emerald); cursor: pointer; margin: 4px 0; }
-.iv-hint { font-size: 11px; color: var(--color-graphite-50); text-align: center; }
-.iv-warn { font-size: 11px; color: var(--color-error); font-weight: 700; text-align: center; }
-.score-mini {
-  display: flex; justify-content: space-between; align-items: center;
-  background: var(--color-graphite-5); border: 1px solid var(--color-graphite-15);
-  border-radius: 6px; padding: 5px 10px; margin-top: 5px;
-}
-.sm-lbl { font-size: 11px; color: var(--color-graphite-50); }
-.sm-val { font-size: 13px; font-weight: 700; color: var(--color-graphite); }
-.sm-val.bad { color: var(--color-error); }
+.tbtn { flex: 1; padding: 7px 4px; border: 1px solid var(--gr15); border-radius: 6px; font-size: 11px; font-weight: 700; cursor: pointer; font-family: var(--fn); transition: all var(--tr); background: var(--wh); color: var(--gr50); }
+.tbtn.yes.on { background: var(--gn5); border-color: var(--em15); color: var(--em120); }
+.tbtn.no.on { background: var(--err5); border-color: rgba(219,53,74,.2); color: var(--err); }
+.iv-input { width: 100%; border: 1px solid var(--gr15); border-radius: 6px; padding: 7px 10px; font-family: var(--fn); font-size: 13px; font-weight: 600; color: var(--gr); background: var(--wh); outline: none; text-align: center; transition: border-color var(--tr); }
+.iv-input:focus { border-color: var(--em); }
+.iv-range { width: 100%; accent-color: var(--em); cursor: pointer; margin: 4px 0; }
+.iv-hint { font-size: 11px; color: var(--gr50); text-align: center; }
+.iv-warn { font-size: 11px; color: var(--err); font-weight: 700; text-align: center; }
+.sc-mini { display: flex; justify-content: space-between; align-items: center; background: var(--gr5); border: 1px solid var(--gr15); border-radius: 6px; padding: 5px 10px; margin-top: 5px; }
+.sc-mini-lbl { font-size: 11px; color: var(--gr50); }
+.sc-mini-val { font-size: 13px; font-weight: 700; color: var(--gr); }
+.sc-mini-val.bad { color: var(--err); }
 
-/* SUP FOOTER */
-.sup-footer { padding: 0 var(--space-3) var(--space-2); }
-.totbar {
-  background: var(--color-graphite);
-  border-radius: var(--radius-sm);
-  padding: 12px var(--space-3);
-  display: flex; gap: var(--space-3); align-items: center; flex-wrap: wrap;
-}
+/* TOTBAR */
+.sup-footer { padding: 0 22px 13px; }
+.totbar { background: var(--gr); border-radius: var(--r8); padding: 11px 18px; display: flex; gap: 14px; align-items: center; flex-wrap: wrap; }
 .tot-item { text-align: center; }
-.tot-lbl { font-size: 10px; color: rgba(255,255,255,0.45); text-transform: uppercase; letter-spacing: 0.07em; margin-bottom: 2px; }
-.tot-val { font-size: 18px; font-weight: 800; color: white; line-height: 1; }
-.tot-sep { color: rgba(255,255,255,0.2); font-size: 16px; }
-.tot-en { font-size: 22px; font-weight: 800; line-height: 1; }
-.tot-en.ok { color: var(--color-emerald-50); }
+.tot-lbl { font-size: 9px; color: rgba(255,255,255,.4); text-transform: uppercase; letter-spacing: .07em; margin-bottom: 2px; }
+.tot-val { font-size: 17px; font-weight: 800; color: white; line-height: 1; }
+.tot-sep { color: rgba(255,255,255,.2); font-size: 15px; }
+.tot-en { font-size: 21px; font-weight: 800; line-height: 1; }
+.tot-en.ok { color: var(--em50); }
 .tot-en.bad { color: #f87171; }
-.tot-price-info {
-  margin-left: auto; background: rgba(255,255,255,0.06);
-  border-radius: 6px; padding: 8px 12px;
-  font-size: 12px; color: rgba(255,255,255,0.5);
-  line-height: 1.8; flex-shrink: 0;
-}
-.tot-price-info b { color: rgba(255,255,255,0.85); }
+.tot-price { margin-left: auto; background: rgba(255,255,255,.06); border-radius: 6px; padding: 7px 12px; font-size: 11px; color: rgba(255,255,255,.5); line-height: 1.8; flex-shrink: 0; }
+.tot-price b { color: rgba(255,255,255,.85); }
 
 /* RESULTS */
-.results-wrap {
-  background: var(--color-white);
-  border: 1px solid var(--color-graphite-15);
-  border-radius: var(--radius-md);
-  overflow: hidden;
-  margin-bottom: var(--space-3);
-  box-shadow: var(--shadow-subtle);
-}
-.rhead {
-  padding: 14px var(--space-3);
-  background: var(--color-graphite);
-  display: flex; align-items: center; justify-content: space-between;
-}
+.res-wrap { background: var(--wh); border: 1px solid var(--gr15); border-radius: var(--r12); overflow: hidden; margin-bottom: 20px; box-shadow: var(--sh); }
+.rhead { padding: 13px 22px; background: var(--gr); display: flex; align-items: center; justify-content: space-between; }
 .rhead-title { font-size: 14px; font-weight: 800; color: white; }
-.rhead-note { font-size: 12px; color: rgba(255,255,255,0.45); }
+.rhead-note { font-size: 12px; color: rgba(255,255,255,.45); }
 .rtable { width: 100%; border-collapse: collapse; }
-.rtable th {
-  background: var(--color-green-15);
-  padding: 9px 13px; text-align: right;
-  font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em;
-  color: var(--color-graphite); border-bottom: 2px solid var(--color-emerald-15);
-  white-space: nowrap;
-}
+.rtable th { background: var(--gn15); padding: 9px 12px; text-align: right; font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .08em; color: var(--gr); border-bottom: 2px solid var(--em15); white-space: nowrap; }
 .rtable th:first-child, .rtable th:nth-child(2), .rtable th:last-child { text-align: left; }
-.rtable td {
-  padding: 11px 13px; border-bottom: 1px solid var(--color-graphite-15);
-  font-size: 13px; vertical-align: middle; text-align: right; white-space: nowrap;
-}
+.rtable td { padding: 10px 12px; border-bottom: 1px solid var(--gr15); font-size: 13px; vertical-align: middle; text-align: right; white-space: nowrap; }
 .rtable td:first-child, .rtable td:nth-child(2), .rtable td:last-child { text-align: left; }
 .rtable tr:last-child td { border-bottom: none; }
-.rtable tr.win-row { background: var(--color-green-5); }
-.rtable tr.rej-row { background: #fdf6f6; opacity: 0.8; }
-.rtable tr.win-row td:first-child { border-left: 3px solid var(--color-emerald); }
-.rtable tr.rej-row td:first-child { border-left: 3px solid var(--color-error); }
-.rbadge {
-  width: 26px; height: 26px; border-radius: 50%;
-  display: inline-flex; align-items: center; justify-content: center;
-  font-size: 12px; font-weight: 800;
-}
-.rb1 { background: var(--color-emerald); color: white; }
-.rb2 { background: var(--color-graphite-30); color: white; }
+.rtable tr.win-row { background: var(--gn5); }
+.rtable tr.rej-row { background: #fdf6f6; opacity: .8; }
+.rtable tr.win-row td:first-child { border-left: 3px solid var(--em); }
+.rtable tr.rej-row td:first-child { border-left: 3px solid var(--err); }
+.rbadge { width: 25px; height: 25px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 800; }
+.rb1 { background: var(--em); color: white; }
+.rb2 { background: var(--gr30); color: white; }
 .rb3 { background: #c07a3e; color: white; }
-.rbn { background: var(--color-graphite-5); color: var(--color-graphite-50); }
-.rbrej { background: var(--color-error-5); color: var(--color-error); font-size: 9px; }
+.rbn { background: var(--gr5); color: var(--gr50); }
+.rbrej { background: var(--err5); color: var(--err); font-size: 9px; }
 .sc { font-weight: 700; }
-.sc.bad { color: var(--color-error); }
-.sc.total { font-size: 15px; color: var(--color-graphite); font-weight: 800; }
-.bar-wrap { display: flex; align-items: center; gap: 8px; }
-.bar { height: 6px; border-radius: 3px; background: var(--color-graphite-15); flex: 1; overflow: hidden; min-width: 50px; }
-.bar-fill { height: 100%; border-radius: 3px; background: var(--color-emerald); }
-.bar-fill.top { background: var(--color-emerald); }
+.sc.bad { color: var(--err); }
+.sc.total { font-size: 15px; color: var(--gr); font-weight: 800; }
+.bar-wrap { display: flex; align-items: center; gap: 7px; }
+.bar { height: 6px; border-radius: 3px; background: var(--gr15); flex: 1; overflow: hidden; min-width: 44px; }
+.bar-fill { height: 100%; border-radius: 3px; background: var(--em); }
+.bar-fill.top { background: var(--em); }
 .dtag { font-size: 11px; font-weight: 700; padding: 2px 7px; border-radius: 20px; }
-.dtag-low { background: var(--color-warning-5); color: #8a5c00; }
-.dtag-high { background: var(--color-error-5); color: var(--color-error); }
-.dtag-norm { background: var(--color-green-5); color: var(--color-emerald-120); }
+.dtag-low { background: var(--wrn5); color: #8a5c00; }
+.dtag-high { background: var(--err5); color: var(--err); }
+.dtag-norm { background: var(--gn5); color: var(--em120); }
 
-/* FORMULA BOX */
-.formula-box {
-  background: var(--color-graphite);
-  border-radius: var(--radius-md);
-  padding: var(--space-3);
-  display: flex; align-items: center; gap: var(--space-3); flex-wrap: wrap;
-}
-.fb-block { }
-.fb-title { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: rgba(255,255,255,0.35); margin-bottom: 5px; }
+/* FORMULA */
+.formula-box { background: var(--gr); border-radius: var(--r12); padding: 20px 24px; display: flex; align-items: center; gap: 22px; flex-wrap: wrap; }
+.fb-title { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .1em; color: rgba(255,255,255,.35); margin-bottom: 5px; }
 .fb-eq { font-size: 14px; color: white; font-weight: 600; line-height: 1.6; font-family: monospace; }
-.fb-eq .hi { color: var(--color-emerald-50); }
-.fb-sep { width: 1px; height: 36px; background: rgba(255,255,255,0.1); flex-shrink: 0; }
-.fb-note { font-size: 12px; color: rgba(255,255,255,0.45); line-height: 1.75; }
-.fb-note b { color: rgba(255,255,255,0.8); }
+.fb-eq .hi { color: var(--em50); }
+.fb-sep { width: 1px; height: 36px; background: rgba(255,255,255,.1); flex-shrink: 0; }
+.fb-note { font-size: 12px; color: rgba(255,255,255,.45); line-height: 1.75; }
+.fb-note b { color: rgba(255,255,255,.8); }
 
 /* MODAL */
-.modal-overlay {
-  display: none; position: fixed; inset: 0;
-  background: rgba(46,54,65,0.55); z-index: 1000;
-  align-items: center; justify-content: center;
-}
-.modal-overlay.open { display: flex; }
-.modal {
-  background: white; border-radius: var(--radius-md);
-  width: 880px; max-width: 95vw; max-height: 92vh;
-  overflow: hidden; display: flex; flex-direction: column;
-  box-shadow: 0 20px 60px rgba(46,54,65,0.25);
-}
-.modal-hdr {
-  padding: 14px var(--space-3); background: var(--color-graphite);
-  display: flex; align-items: center; justify-content: space-between; flex-shrink: 0;
-}
+.modal-ov { display: none; position: fixed; inset: 0; background: rgba(46,54,65,.55); z-index: 1000; align-items: center; justify-content: center; }
+.modal-ov.open { display: flex; }
+.modal { background: white; border-radius: var(--r12); width: 900px; max-width: 95vw; max-height: 92vh; overflow: hidden; display: flex; flex-direction: column; box-shadow: 0 20px 60px rgba(46,54,65,.25); }
+.modal-hdr { padding: 14px 24px; background: var(--gr); display: flex; align-items: center; justify-content: space-between; flex-shrink: 0; }
 .modal-hdr-title { color: white; font-size: 14px; font-weight: 800; }
 .mbtns { display: flex; gap: 8px; }
-.mbtn { padding: 7px 16px; border-radius: var(--radius-sm); font-size: 12px; font-weight: 700; cursor: pointer; font-family: var(--font-base); border: none; transition: all var(--transition); }
-.mbtn-print { background: var(--color-emerald-50); color: var(--color-graphite); }
-.mbtn-print:hover { background: var(--color-emerald); color: white; }
-.mbtn-close { background: rgba(255,255,255,0.1); color: white; border: 1px solid rgba(255,255,255,0.2); }
-.mbtn-close:hover { background: rgba(255,255,255,0.2); }
+.mbtn { padding: 7px 16px; border-radius: var(--r8); font-size: 12px; font-weight: 700; cursor: pointer; font-family: var(--fn); border: none; transition: all var(--tr); }
+.mbtn-p { background: var(--em50); color: var(--gr); }
+.mbtn-p:hover { background: var(--em); color: white; }
+.mbtn-c { background: rgba(255,255,255,.1); color: white; border: 1px solid rgba(255,255,255,.2); }
+.mbtn-c:hover { background: rgba(255,255,255,.2); }
 .modal-body { overflow-y: auto; flex: 1; }
 
 /* PROTOCOL */
-.protocol { padding: 36px 40px; font-family: "Nunito Sans", Arial, sans-serif; color: #2E3641; font-size: 13px; line-height: 1.6; }
-.proto-hdr { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 22px; padding-bottom: 16px; border-bottom: 2px solid #00A072; }
-.proto-org { font-size: 18px; font-weight: 800; color: #00A072; letter-spacing: 0.04em; }
-.proto-org-sub { font-size: 11px; color: #737483; margin-top: 2px; }
-.proto-doc { text-align: right; font-size: 12px; color: #737483; line-height: 1.9; }
-.proto-doc b { color: #2E3641; }
-.proto-title { text-align: center; margin-bottom: 18px; }
-.proto-title h2 { font-size: 14px; font-weight: 800; color: #2E3641; text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 4px; }
-.proto-title p { font-size: 13px; color: #737483; }
-.proto-meta { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 16px; background: #EFF9F1; border-radius: 8px; padding: 13px 16px; }
-.pm-lbl { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: #737483; margin-bottom: 2px; }
-.pm-val { font-size: 13px; font-weight: 700; color: #2E3641; }
-.proto-sec { margin-bottom: 18px; }
-.proto-sec h3 { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.09em; color: #2E3641; border-bottom: 1px solid #E1E2E4; padding-bottom: 5px; margin-bottom: 10px; }
-.ptable { width: 100%; border-collapse: collapse; font-size: 12px; }
-.ptable th { background: #D7EEDB; color: #2E3641; padding: 7px 9px; text-align: right; font-size: 10px; font-weight: 800; letter-spacing: 0.07em; text-transform: uppercase; white-space: nowrap; }
-.ptable th:first-child, .ptable th:nth-child(2) { text-align: left; }
-.ptable td { padding: 8px 9px; border-bottom: 1px solid #E1E2E4; text-align: right; white-space: nowrap; }
-.ptable td:first-child, .ptable td:nth-child(2) { text-align: left; }
-.ptable tr.pw { background: #EFF9F1; }
-.ptable tr.pr { background: #fdf6f6; opacity: 0.85; }
-.ptable tr.pw td:first-child { border-left: 3px solid #00A072; }
-.ptable tr.pr td:first-child { border-left: 3px solid #DB354A; }
-.proto-risk { background: #FFF8EB; border: 1px solid rgba(250,176,59,0.4); border-radius: 6px; padding: 10px 14px; margin-bottom: 14px; font-size: 12px; color: #7a5500; }
-.proto-risk-title { font-weight: 800; margin-bottom: 4px; font-size: 13px; }
-.sign-grid { margin-top: 28px; display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px; }
-.sign-item { border-top: 1px solid #737483; padding-top: 7px; font-size: 11px; color: #737483; }
-.sign-role { font-weight: 800; color: #2E3641; margin-bottom: 2px; }
-.sign-line { height: 28px; }
-.proto-footer { margin-top: 18px; padding-top: 10px; border-top: 1px solid #E1E2E4; font-size: 10px; color: #C7CDD3; display: flex; justify-content: space-between; }
-
+.proto { padding: 34px 38px; font-family: "Nunito Sans",Arial,sans-serif; color: #2E3641; font-size: 13px; line-height: 1.6; }
+.ph { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 20px; padding-bottom: 15px; border-bottom: 2px solid #00A072; }
+.ph-org { font-size: 17px; font-weight: 800; color: #00A072; letter-spacing: .04em; }
+.ph-sub { font-size: 11px; color: #737483; margin-top: 2px; }
+.ph-doc { text-align: right; font-size: 12px; color: #737483; line-height: 1.9; }
+.ph-doc b { color: #2E3641; }
+.pt { text-align: center; margin-bottom: 16px; }
+.pt h2 { font-size: 13px; font-weight: 800; color: #2E3641; text-transform: uppercase; letter-spacing: .06em; margin-bottom: 3px; }
+.pt p { font-size: 12px; color: #737483; }
+.pm { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 15px; background: #EFF9F1; border-radius: 7px; padding: 12px 15px; }
+.pm-l { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .08em; color: #737483; margin-bottom: 2px; }
+.pm-v { font-size: 13px; font-weight: 700; color: #2E3641; }
+.ps { margin-bottom: 16px; }
+.ps h3 { font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: .09em; color: #2E3641; border-bottom: 1px solid #E1E2E4; padding-bottom: 4px; margin-bottom: 8px; }
+.ptab { width: 100%; border-collapse: collapse; font-size: 12px; }
+.ptab th { background: #D7EEDB; color: #2E3641; padding: 7px 8px; text-align: right; font-size: 10px; font-weight: 800; letter-spacing: .07em; text-transform: uppercase; white-space: nowrap; }
+.ptab th:first-child, .ptab th:nth-child(2) { text-align: left; }
+.ptab td { padding: 7px 8px; border-bottom: 1px solid #E1E2E4; text-align: right; white-space: nowrap; font-weight: 600; }
+.ptab td:first-child, .ptab td:nth-child(2) { text-align: left; font-weight: 400; }
+.ptab tr.pw { background: #EFF9F1; }
+.ptab tr.pr { background: #fdf6f6; opacity: .85; }
+.ptab tr.pw td:first-child { border-left: 3px solid #00A072; }
+.ptab tr.pr td:first-child { border-left: 3px solid #DB354A; }
+.p-risk { background: #FFF8EB; border: 1px solid rgba(250,176,59,.4); border-radius: 5px; padding: 9px 13px; margin-bottom: 13px; font-size: 12px; color: #7a5500; }
+.p-risk-t { font-weight: 800; margin-bottom: 4px; }
+.sign-g { margin-top: 26px; display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 18px; }
+.sign-i { border-top: 1px solid #737483; padding-top: 6px; font-size: 11px; color: #737483; }
+.sign-r { font-weight: 800; color: #2E3641; margin-bottom: 2px; }
+.sign-l { height: 26px; }
+.p-foot { margin-top: 16px; padding-top: 10px; border-top: 1px solid #E1E2E4; font-size: 10px; color: #C7CDD3; display: flex; justify-content: space-between; }
 @media print {
   body { background: white; }
-  .modal-overlay { display: block !important; position: static; background: none; }
+  .modal-ov { display: block !important; position: static; background: none; }
   .modal { box-shadow: none; border-radius: 0; max-height: none; width: 100%; }
   .modal-hdr { display: none; }
-  .protocol { padding: 18px; }
+  .proto { padding: 16px; }
 }
 </style>
 </head>
 <body>
 
 <!-- MODAL -->
-<div class="modal-overlay" id="modalOverlay" onclick="if(event.target===this)closeModal()">
+<div class="modal-ov" id="modalOv" onclick="if(event.target===this)closeModal()">
   <div class="modal">
     <div class="modal-hdr">
       <div class="modal-hdr-title">Vertinimo protokolas — peržiūra prieš spausdinimą</div>
       <div class="mbtns">
-        <button class="mbtn mbtn-print" onclick="window.print()">Spausdinti / PDF</button>
-        <button class="mbtn mbtn-close" onclick="closeModal()">Uždaryti</button>
+        <button class="mbtn mbtn-p" onclick="window.print()">Spausdinti / PDF</button>
+        <button class="mbtn mbtn-c" onclick="closeModal()">Uždaryti</button>
       </div>
     </div>
-    <div class="modal-body"><div class="protocol" id="protocolContent"></div></div>
+    <div class="modal-body"><div class="proto" id="protocolContent"></div></div>
   </div>
 </div>
 
@@ -537,18 +274,16 @@ body {
   <div class="header-inner">
     <div class="logo-wrap">
       <div class="logo-mark">
-        <svg viewBox="0 0 107.83657 107.83657" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <g transform="translate(-92.58,0) scale(0.75) translate(20,14)">
-            <path fill="white" d="M160.9,41.6l24.3-24.1-2.2-2.2-24.3,24.1c-2.9-2.4-6.4-4-10.4-4.2V1.2h-3.2v34c-3.9,0.3-7.5,1.8-10.3,4.2L110.5,15.4l-2.2,2.2l24.3,24.1c-2.4,2.8-4,6.4-4.3,10.3H94v3.1h34.3c0.3,3.9,1.9,7.4,4.3,10.2l-24.3,24.1l2.2,2.2l24.3-24.1c2.8,2.4,6.4,3.9,10.3,4.2v34h3.2V71.8c4-0.3,7.5-1.8,10.4-4.2l24.3,24.1l2.2-2.2l-24.3-24.1c2.4-2.8,4-6.4,4.3-10.2h34.4v-3.1h-34.4C164.9,48,163.4,44.5,160.9,41.6z M134.8,43.9l8.1,8.1h-11.5C131.7,48.9,132.9,46.1,134.8,43.9z M131.5,55.1h11.5l-8.1,8.1C133,61,131.8,58.1,131.5,55.1z M145.2,68.7c-3-0.3-5.9-1.5-8.1-3.4l8.1-8.1V68.7z M145.2,49.7l-8.1-8.1c2.3-1.8,5.1-3,8.1-3.4V49.7z M148.3,38.3c3,0.3,5.9,1.6,8.1,3.4l-8.1,8.1V38.3z M148.3,68.7V57.3l8.1,8.1C154.2,67.3,151.4,68.4,148.3,68.7z M158.7,63.1l-8.1-8.1h11.5C161.7,57.9,160.5,60.7,158.7,63.1z M150.6,51.9l8.1-8.1c1.8,2.2,3,5,3.4,8.1H150.6z"/>
-          </g>
+        <svg width="18" height="18" viewBox="0 0 107.83 107.83" fill="white" xmlns="http://www.w3.org/2000/svg">
+          <path d="M68.32 41.6l24.3-24.1-2.2-2.2-24.3 24.1c-2.9-2.4-6.4-4-10.4-4.2V1.2h-3.2v34c-3.9.3-7.5 1.8-10.3 4.2L17.92 15.4l-2.2 2.2 24.3 24.1c-2.4 2.8-4 6.4-4.3 10.3H1.42v3.1h34.3c.3 3.9 1.9 7.4 4.3 10.2l-24.3 24.1 2.2 2.2 24.3-24.1c2.8 2.4 6.4 3.9 10.3 4.2v34h3.2V71.8c4-.3 7.5-1.8 10.4-4.2l24.3 24.1 2.2-2.2-24.3-24.1c2.4-2.8 4-6.4 4.3-10.2h34.4v-3.1H72.62c-.3-3.8-1.8-7.3-4.3-10.2zM42.22 43.9l8.1 8.1h-11.5c.3-3.1 1.5-5.9 3.4-8.1zm-3.3 11.2h11.5l-8.1 8.1c-1.8-2.2-3-5-3.4-8.1zm13.5 13.6c-3-.3-5.9-1.5-8.1-3.4l8.1-8.1v11.5zm0-19l-8.1-8.1c2.3-1.8 5.1-3 8.1-3.4v11.5zm3.2-11.4c3 .3 5.9 1.6 8.1 3.4l-8.1 8.1V38.3zm0 30.4V57.3l8.1 8.1c-2.1 1.9-4.9 3-8.1 3.3zm10.4-5.6l-8.1-8.1h11.5c-.3 3.1-1.5 5.9-3.4 8.1zm-8.1-11.2l8.1-8.1c1.8 2.2 3 5 3.4 8.1h-11.5z"/>
         </svg>
       </div>
       <div class="logo-name">Litgrid</div>
       <div class="logo-sep"></div>
-      <div class="header-subtitle">Pasiūlymų vertinimo įrankis</div>
+      <div class="header-sub">Pasiūlymų vertinimo įrankis</div>
     </div>
-    <div class="header-right">
-      <span class="hbadge">DAS-TPI v3</span>
+    <div class="hright">
+      <span class="hbadge">DAS-TPI v4</span>
       <button class="btn-proto" onclick="openProtocol()">
         <svg width="13" height="13" viewBox="0 0 13 13" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="1" width="9" height="11" rx="1"/><line x1="4" y1="4" x2="9" y2="4"/><line x1="4" y1="7" x2="9" y2="7"/><line x1="4" y1="10" x2="7" y2="10"/></svg>
         Generuoti protokolą
@@ -559,118 +294,98 @@ body {
 
 <div class="container">
 
-  <!-- PIRKIMO INFO — only name + value -->
-  <div class="pirkimo-info">
-    <div class="pi-field">
-      <div class="pi-label">Pirkimo pavadinimas</div>
-      <input class="pi-input" id="piName" type="text" placeholder="Įveskite pirkimo pavadinimą">
-    </div>
-    <div class="pi-field narrow">
-      <div class="pi-label">Numatoma vertė, EUR be PVM</div>
-      <input class="pi-input" id="piValue" type="number" placeholder="0,00">
-    </div>
+  <!-- PIRKIMO INFO -->
+  <div class="pi-bar">
+    <div class="pi-field"><div class="pi-lbl">Pirkimo pavadinimas</div><input class="pi-input" id="piName" type="text" placeholder="Įveskite pirkimo pavadinimą"></div>
+    <div class="pi-field narrow"><div class="pi-lbl">Numatoma vertė, EUR be PVM</div><input class="pi-input" id="piValue" type="number" placeholder="0,00"></div>
   </div>
 
-  <!-- CRITERIA BAR — editable scores -->
-  <div class="criteria-section">
-    <div class="criteria-section-header">
-      <div class="criteria-section-title">Vertinimo kriterijai ir balų paskirstymas</div>
-      <div class="criteria-sum-display ok" id="critSumDisplay">Suma: 100 / 100</div>
+  <!-- CRITERIA -->
+  <div class="crit-section">
+    <div class="crit-sec-hdr">
+      <div class="crit-sec-title">Vertinimo kriterijai ir balų paskirstymas</div>
+      <div class="sum-badge sum-ok" id="sumDisplay">Suma: 100 / 100</div>
     </div>
-    <div class="criteria-bar">
-      <div class="crit-card" id="cc-A">
-        <div class="cc-label">I kriterijus (A)</div>
-        <div class="cc-name">Paslaugų kaina</div>
-        <div class="cc-pts-wrap">
-          <input class="cc-pts-input" id="maxA" type="number" min="1" max="98" value="63" oninput="updateCritMax()">
-          <span class="cc-pts-unit">balai</span>
-        </div>
-        <div class="cc-note">A = maxA × (WPmin / WPp)</div>
+    <div class="crit-grid">
+      <div class="cc cc-price" id="cc-A">
+        <div class="cc-lbl">I kriterijus (A)</div>
+        <div class="cc-name">Bandymo paslaugų kaina</div>
+        <div class="cc-pts-wrap"><input class="cc-pts-input" id="maxA" type="number" min="1" max="98" value="20" oninput="updateMax()"><span class="cc-pts-unit">balų</span></div>
+        <div class="cc-note">A = maxA × (Amin / Ap)</div>
       </div>
-      <div class="crit-card" id="cc-B">
-        <div class="cc-label">II kriterijus (B)</div>
+      <div class="cc cc-price" id="cc-B">
+        <div class="cc-lbl">II kriterijus (B)</div>
+        <div class="cc-name">Įrangos kaina</div>
+        <div class="cc-pts-wrap"><input class="cc-pts-input" id="maxB" type="number" min="1" max="98" value="43" oninput="updateMax()"><span class="cc-pts-unit">balų</span></div>
+        <div class="cc-note">B = maxB × (Bmin / Bp)</div>
+      </div>
+      <div class="cc" id="cc-C">
+        <div class="cc-lbl">III kriterijus (C)</div>
         <div class="cc-name">Pristatymo terminas</div>
-        <div class="cc-pts-wrap">
-          <input class="cc-pts-input" id="maxB" type="number" min="0" max="98" value="10" oninput="updateCritMax()">
-          <span class="cc-pts-unit">balų</span>
-        </div>
-        <div class="cc-note">≤3 mėn=maxB / 4mėn=½ / 5mėn=0</div>
+        <div class="cc-pts-wrap"><input class="cc-pts-input" id="maxC" type="number" min="0" max="98" value="10" oninput="updateMax()"><span class="cc-pts-unit">balų</span></div>
+        <div class="cc-note">≤3 mėn=maxC / 4mėn=½ / 5mėn=0</div>
       </div>
-      <div class="crit-card" id="cc-C">
-        <div class="cc-label">III kriterijus (C)</div>
+      <div class="cc" id="cc-D">
+        <div class="cc-lbl">IV kriterijus (D)</div>
         <div class="cc-name">Interviu</div>
-        <div class="cc-pts-wrap">
-          <input class="cc-pts-input" id="maxC" type="number" min="0" max="98" value="17" oninput="updateCritMax()">
-          <span class="cc-pts-unit">balų</span>
-        </div>
-        <div class="cc-note danger" id="ccCnote">Min. ≥ 8 pt · kitaip ATMESTAS</div>
+        <div class="cc-pts-wrap"><input class="cc-pts-input" id="maxD" type="number" min="0" max="98" value="17" oninput="updateMax()"><span class="cc-pts-unit">balų</span></div>
+        <div class="cc-note danger">Min. ≥ 8 pt · kitaip ATMESTAS</div>
       </div>
-      <div class="crit-card" id="cc-D">
-        <div class="cc-label">IV kriterijus (D)</div>
+      <div class="cc" id="cc-E">
+        <div class="cc-lbl">V kriterijus (E)</div>
         <div class="cc-name">MS Active Directory</div>
-        <div class="cc-pts-wrap">
-          <input class="cc-pts-input" id="maxD" type="number" min="0" max="98" value="5" oninput="updateCritMax()">
-          <span class="cc-pts-unit">balai</span>
-        </div>
-        <div class="cc-note">Taip = maxD / Ne = 0</div>
-      </div>
-      <div class="crit-card" id="cc-E">
-        <div class="cc-label">V kriterijus (E)</div>
-        <div class="cc-name">Meteostotis</div>
-        <div class="cc-pts-wrap">
-          <input class="cc-pts-input" id="maxE" type="number" min="0" max="98" value="5" oninput="updateCritMax()">
-          <span class="cc-pts-unit">balai</span>
-        </div>
+        <div class="cc-pts-wrap"><input class="cc-pts-input" id="maxE" type="number" min="0" max="98" value="5" oninput="updateMax()"><span class="cc-pts-unit">balai</span></div>
         <div class="cc-note">Taip = maxE / Ne = 0</div>
       </div>
+      <div class="cc" id="cc-F">
+        <div class="cc-lbl">VI kriterijus (F)</div>
+        <div class="cc-name">Meteostotis</div>
+        <div class="cc-pts-wrap"><input class="cc-pts-input" id="maxF" type="number" min="0" max="98" value="5" oninput="updateMax()"><span class="cc-pts-unit">balai</span></div>
+        <div class="cc-note">Taip = maxF / Ne = 0</div>
+      </div>
     </div>
   </div>
 
-  <!-- RISK PANEL -->
+  <!-- RISK -->
   <div class="risk-panel" id="riskPanel">
-    <div class="rp-hdr"><span class="rp-icon" id="riskIcon"></span><span class="rp-title" id="riskTitle"></span></div>
+    <div class="rp-hdr"><span id="riskIcon" style="font-size:15px"></span><span class="rp-title" id="riskTitle"></span></div>
     <div class="rp-items" id="riskItems"></div>
   </div>
 
   <!-- SUPPLIERS -->
-  <div class="section-head">
-    <div>
-      <div class="section-title">Tiekėjų pasiūlymai</div>
-      <div class="section-sub">Pridėkite tiekėjus ir įveskite jų pasiūlymų duomenis</div>
-    </div>
-    <button class="btn-add" onclick="addSupplier()">
+  <div class="sec-hdr">
+    <div><div class="sec-title">Tiekėjų pasiūlymai</div><div class="sec-sub">Pridėkite tiekėjus ir įveskite jų pasiūlymų duomenis</div></div>
+    <button class="btn-add" onclick="addSup()">
       <svg width="13" height="13" viewBox="0 0 13 13" stroke="currentColor" stroke-width="2.5" fill="none"><line x1="6.5" y1="1.5" x2="6.5" y2="11.5"/><line x1="1.5" y1="6.5" x2="11.5" y2="6.5"/></svg>
       Pridėti tiekėją
     </button>
   </div>
-  <div class="suppliers-grid" id="suppliersGrid"></div>
+  <div class="sup-grid" id="supGrid"></div>
 
   <!-- RESULTS -->
-  <div class="section-head" style="margin-top:4px">
-    <div>
-      <div class="section-title">Vertinimo rezultatai</div>
-      <div class="section-sub">Eilė pagal EN · kainos nukrypimas nuo vidurkio rodo kainos pagrįstumo poreikį</div>
-    </div>
+  <div class="sec-hdr" style="margin-top:4px">
+    <div><div class="sec-title">Vertinimo rezultatai</div><div class="sec-sub">Eilė pagal EN · kainos nukrypimas nuo vidurkio žymi pagrįstumo vertinimo poreikį</div></div>
   </div>
-  <div class="results-wrap">
-    <div class="rhead">
-      <div class="rhead-title">Pasiūlymų eilė</div>
-      <div class="rhead-note" id="resultsNote">Pridėkite pasiūlymus</div>
-    </div>
+  <div class="res-wrap">
+    <div class="rhead"><div class="rhead-title">Pasiūlymų eilė</div><div class="rhead-note" id="resNote">Pridėkite pasiūlymus</div></div>
     <div style="overflow-x:auto">
       <table class="rtable">
-        <thead>
-          <tr>
-            <th style="text-align:left;width:44px">Eilė</th>
-            <th style="text-align:left;min-width:130px">Tiekėjas</th>
-            <th>1 etapas EUR</th><th>2 etapas EUR</th><th>WP svertinė</th>
-            <th>A</th><th>B</th><th>C</th><th>D</th><th>E</th>
-            <th style="min-width:110px">EN</th>
-            <th style="text-align:left;min-width:130px">Kaina vs. vidurkis</th>
-          </tr>
-        </thead>
-        <tbody id="resultsBody">
-          <tr><td colspan="12" style="text-align:center;padding:28px;color:var(--color-graphite-50);font-style:italic">Pridėkite bent vieną tiekėją</td></tr>
+        <thead><tr>
+          <th style="text-align:left;width:42px">Eilė</th>
+          <th style="text-align:left;min-width:120px">Tiekėjas</th>
+          <th>Bandymas EUR</th>
+          <th>Įranga EUR</th>
+          <th>A /maxA</th>
+          <th>B /maxB</th>
+          <th>C /maxC</th>
+          <th>D /maxD</th>
+          <th>E /maxE</th>
+          <th>F /maxF</th>
+          <th style="min-width:105px">EN /100</th>
+          <th style="text-align:left;min-width:120px">Bendra kaina vs. vid.</th>
+        </tr></thead>
+        <tbody id="resBody">
+          <tr><td colspan="12" style="text-align:center;padding:26px;color:var(--gr50);font-style:italic">Pridėkite bent vieną tiekėją</td></tr>
         </tbody>
       </table>
     </div>
@@ -678,356 +393,360 @@ body {
 
   <!-- FORMULA -->
   <div class="formula-box">
-    <div class="fb-block"><div class="fb-title">Vertinimo formulė</div><div class="fb-eq">EN = <span class="hi">A</span> + <span class="hi">B</span> + <span class="hi">C</span> + <span class="hi">D</span> + <span class="hi">E</span></div></div>
+    <div><div class="fb-title">Vertinimo formulė</div><div class="fb-eq">EN = <span class="hi">A</span> + <span class="hi">B</span> + <span class="hi">C</span> + <span class="hi">D</span> + <span class="hi">E</span> + <span class="hi">F</span></div></div>
     <div class="fb-sep"></div>
-    <div class="fb-block"><div class="fb-title">Kainos kriterijus — dviejų etapų svertinė</div><div class="fb-eq">WP = (K₁ × <span class="hi">0.30</span>) + (K₂ × <span class="hi">0.70</span>) &nbsp;|&nbsp; A = maxA × (WP<span class="hi">min</span> / WP<span class="hi">p</span>)</div></div>
+    <div><div class="fb-title">Kainos kriterijai</div><div class="fb-eq">A = maxA × (A<span class="hi">min</span>/A<span class="hi">p</span>) &nbsp;|&nbsp; B = maxB × (B<span class="hi">min</span>/B<span class="hi">p</span>)</div></div>
     <div class="fb-sep"></div>
-    <div class="fb-note"><b>K₁</b> = Bandymo paslaugos (1 etapas)<br><b>K₂</b> = Įrangos tiekimas (2 etapas)<br><b>Atmetimas:</b> interviu &lt; 8 pt</div>
+    <div class="fb-note"><b>A</b> = Bandymo paslaugų kaina (savarankiškas)<br><b>B</b> = Įrangos kaina (savarankiškas)<br><b>Atmetimas:</b> interviu (D) &lt; 8 pt</div>
   </div>
 </div>
 
 <script>
 var suppliers = [], nextId = 1, LOW = -25, HIGH = 30;
 
-function getMax() {
+function getM() {
   return {
-    A: parseFloat(document.getElementById('maxA').value) || 63,
-    B: parseFloat(document.getElementById('maxB').value) || 10,
-    C: parseFloat(document.getElementById('maxC').value) || 17,
-    D: parseFloat(document.getElementById('maxD').value) || 5,
-    E: parseFloat(document.getElementById('maxE').value) || 5
+    A: parseFloat(document.getElementById('maxA').value)||20,
+    B: parseFloat(document.getElementById('maxB').value)||43,
+    C: parseFloat(document.getElementById('maxC').value)||10,
+    D: parseFloat(document.getElementById('maxD').value)||17,
+    E: parseFloat(document.getElementById('maxE').value)||5,
+    F: parseFloat(document.getElementById('maxF').value)||5
   };
 }
 
-function updateCritMax() {
-  var m = getMax();
-  var sum = m.A + m.B + m.C + m.D + m.E;
-  var disp = document.getElementById('critSumDisplay');
-  disp.textContent = 'Suma: ' + sum + ' / 100';
-  disp.className = 'criteria-sum-display ' + (sum === 100 ? 'ok' : 'warn');
-  ['A','B','C','D','E'].forEach(function(k) {
-    document.getElementById('cc-'+k).className = 'crit-card' + (sum > 100 ? ' over' : '');
+function updateMax() {
+  var m = getM(), s = m.A+m.B+m.C+m.D+m.E+m.F;
+  var d = document.getElementById('sumDisplay');
+  d.textContent = 'Suma: '+s+' / 100';
+  d.className = 'sum-badge '+(s===100?'sum-ok':'sum-warn');
+  ['A','B','C','D','E','F'].forEach(function(k){
+    document.getElementById('cc-'+k).className='cc'+(k==='A'||k==='B'?' cc-price':'')+(s>100?' over':'');
   });
   renderAll();
 }
 
-function f(n, d) { d = d === undefined ? 2 : d; if (isNaN(n) || n === null) return '—'; return n.toLocaleString('lt-LT', {minimumFractionDigits:d, maximumFractionDigits:d}); }
-function fe(n) { return (!n || isNaN(n)) ? '—' : f(n) + ' EUR'; }
+function f(n,d){d=d===undefined?2:d;if(isNaN(n)||n===null)return '—';return n.toLocaleString('lt-LT',{minimumFractionDigits:d,maximumFractionDigits:d});}
+function fe(n){return(!n||isNaN(n))?'—':f(n)+' EUR';}
 
-function calcB(d, maxB) {
-  if (d <= 3) return maxB;
-  if (d === 4) return Math.round(maxB / 2);
-  return 0;
-}
-function calcWP(k1, k2) { return (parseFloat(k1)||0)*0.30 + (parseFloat(k2)||0)*0.70; }
-function calcA(wp, wpMin, maxA) { return (!wp || !wpMin) ? 0 : maxA*(wpMin/wp); }
+function calcC(del, maxC) { return del<=3?maxC:del===4?Math.round(maxC/2):0; }
 
-function getWpMin() {
-  var w = suppliers.map(function(s) {
-    var k1=parseFloat(s.k1)||0, k2=parseFloat(s.k2)||0;
-    return (!k1&&!k2) ? Infinity : calcWP(k1,k2);
-  }).filter(function(v){return v>0&&v!==Infinity;});
-  return w.length ? Math.min.apply(null, w) : 1;
+function getK1Min() {
+  var w=suppliers.map(function(s){var k=parseFloat(s.k1)||0;return k>0?k:Infinity;}).filter(function(v){return v!==Infinity;});
+  return w.length?Math.min.apply(null,w):1;
 }
-function getWpAvg() {
-  var w = suppliers.map(function(s) {
-    var k1=parseFloat(s.k1)||0, k2=parseFloat(s.k2)||0;
-    return (!k1&&!k2) ? null : calcWP(k1,k2);
-  }).filter(function(v){return v!==null&&v>0;});
-  return w.length ? w.reduce(function(a,b){return a+b;},0)/w.length : 0;
+function getK2Min() {
+  var w=suppliers.map(function(s){var k=parseFloat(s.k2)||0;return k>0?k:Infinity;}).filter(function(v){return v!==Infinity;});
+  return w.length?Math.min.apply(null,w):1;
 }
-function getScores(s, wpMin) {
-  var m = getMax();
-  var k1=parseFloat(s.k1)||0, k2=parseFloat(s.k2)||0, wp=calcWP(k1,k2);
-  var A=(k1>0||k2>0)?calcA(wp,wpMin,m.A):0;
-  var B=calcB(s.delivery, m.B);
-  var CT=parseFloat(s.interview)||0, C=CT;
-  var D=s.adYes?m.D:0, E=s.meteoYes?m.E:0;
-  return {k1:k1,k2:k2,wp:wp,A:A,B:B,C:C,D:D,E:E,EN:A+B+C+D+E,CT:CT,rejected:CT<8};
+function getAvgTotal() {
+  var w=suppliers.map(function(s){var k1=parseFloat(s.k1)||0,k2=parseFloat(s.k2)||0;return(k1>0||k2>0)?k1+k2:null;}).filter(function(v){return v!==null;});
+  return w.length?w.reduce(function(a,b){return a+b;},0)/w.length:0;
 }
-function getDev(wp, avg) { return (!wp||!avg)?null:Math.round((wp-avg)/avg*100); }
+function getDevTotal(s, avg) {
+  var k1=parseFloat(s.k1)||0,k2=parseFloat(s.k2)||0,tot=k1+k2;
+  return(!tot||!avg)?null:Math.round((tot-avg)/avg*100);
+}
 
-function addSupplier() {
+function getScores(s, k1Min, k2Min) {
+  var m=getM();
+  var k1=parseFloat(s.k1)||0, k2=parseFloat(s.k2)||0;
+  var A=k1>0?m.A*(k1Min/k1):0;
+  var B=k2>0?m.B*(k2Min/k2):0;
+  var C=calcC(s.delivery, m.C);
+  var CT=parseFloat(s.interview)||0, D=CT;
+  var E=s.adYes?m.E:0, Fv=s.meteoYes?m.F:0;
+  return {k1:k1,k2:k2,A:A,B:B,C:C,D:D,E:E,F:Fv,EN:A+B+C+D+E+Fv,CT:CT,rejected:CT<8};
+}
+
+function addSup() {
   suppliers.push({id:nextId++,name:'',k1:'',k2:'',delivery:3,interview:8,adYes:false,meteoYes:false});
   renderAll();
-  setTimeout(function() {
-    var el = document.getElementById('sn-'+(nextId-1));
-    if (el) el.focus();
-  }, 50);
+  var nid = nextId-1;
+  setTimeout(function(){var el=document.getElementById('sn-'+nid);if(el)el.focus();},50);
 }
-function removeSup(id) { suppliers=suppliers.filter(function(s){return s.id!==id;}); renderAll(); }
-// Full re-render — only for structural changes (add/remove/toggle/select)
-function upd(id, field, val) { var s=suppliers.find(function(x){return x.id===id;}); if(s){s[field]=val;renderAll();} }
-function renderAll() { renderSups(); renderResults(); renderRisks(); }
+function removeSup(id){suppliers=suppliers.filter(function(s){return s.id!==id;});renderAll();}
+function upd(id,field,val){var s=suppliers.find(function(x){return x.id===id;});if(s){s[field]=val;renderAll();}}
 
-// Soft update — for text/number inputs: updates only computed elements, preserves focus
-function updSoft(id, field, val) {
-  var s = suppliers.find(function(x){return x.id===id;});
-  if (!s) return;
-  s[field] = val;
-  updateSupComputed(id);
+// Soft update for text/number inputs — no DOM re-render of cards
+function updSoft(id,field,val) {
+  var s=suppliers.find(function(x){return x.id===id;});
+  if(!s)return;
+  s[field]=val;
+  updateSupComp(id);
   renderResults();
   renderRisks();
 }
 
-function updateSupComputed(id) {
-  var s = suppliers.find(function(x){return x.id===id;});
-  if (!s) return;
-  var wpMin = getWpMin(), avgWP = getWpAvg(), m = getMax();
-  var sc = getScores(s, wpMin);
-  var wp = calcWP(parseFloat(s.k1)||0, parseFloat(s.k2)||0);
-  var dev = getDev(wp, avgWP), isLow = dev!==null&&dev<LOW;
-  var validSorted = suppliers.map(function(x){return{s:x,sc:getScores(x,wpMin)};})
-    .filter(function(x){return !x.sc.rejected;})
-    .sort(function(a,b){return b.sc.EN-a.sc.EN;});
-  var isW = !sc.rejected && validSorted.length>0 && validSorted[0].s.id===id;
+function updateSupComp(id) {
+  var s=suppliers.find(function(x){return x.id===id;});
+  if(!s)return;
+  var k1Min=getK1Min(),k2Min=getK2Min(),avgTot=getAvgTotal(),m=getM();
+  var sc=getScores(s,k1Min,k2Min);
+  var k1=parseFloat(s.k1)||0,k2=parseFloat(s.k2)||0;
+  var dev=getDevTotal(s,avgTot),isLow=dev!==null&&dev<LOW;
+  var validSorted=suppliers.map(function(x){return{s:x,sc:getScores(x,k1Min,k2Min)};})
+    .filter(function(x){return!x.sc.rejected;}).sort(function(a,b){return b.sc.EN-a.sc.EN;});
+  var isW=!sc.rejected&&validSorted.length>0&&validSorted[0].s.id===id;
 
-  function set(eid, html) { var el=document.getElementById(eid); if(el) el.innerHTML=html; }
-  function cls(eid, c)  { var el=document.getElementById(eid); if(el) el.className=c; }
+  function set(eid,html){var el=document.getElementById(eid);if(el)el.innerHTML=html;}
+  function cls(eid,c){var el=document.getElementById(eid);if(el)el.className=c;}
 
-  // Card class + num colour driven by CSS .rejected .sup-num
-  cls('scard-'+id, 'sup-card'+(sc.rejected?' rejected':'')+(isW?' winner':''));
-  // Tags
+  cls('scard-'+id,'sup-card'+(sc.rejected?' rejected':'')+(isW?' winner':''));
   set('stags-'+id,
     (isW?'<span class="stag stag-win">Laimėtojas</span>':'')+
     (sc.rejected?'<span class="stag stag-rej">Atmestas</span>':'')+
     (isLow&&!sc.rejected?'<span class="stag stag-low">Maža kaina</span>':'')
   );
-  // Price computed
-  var el1=document.getElementById('coef1-'+id); if(el1) el1.textContent=(s.k1?f((parseFloat(s.k1)||0)*0.30):'—')+' EUR svertinė';
-  var el2=document.getElementById('coef2-'+id); if(el2) el2.textContent=(s.k2?f((parseFloat(s.k2)||0)*0.70):'—')+' EUR svertinė';
-  var elwp=document.getElementById('wpval-'+id); if(elwp) elwp.textContent=wp?f(wp)+' EUR':'—';
-  var devHtml='';
-  if(dev!==null&&wp>0){var dc=dev<LOW?'dev-inline dev-low':dev>HIGH?'dev-inline dev-high':'dev-inline dev-norm';var sym=dev>0?'+':'';devHtml='<div class="'+dc+'"><span>Nukrypimas nuo vidurkio</span><span>'+sym+dev+'%</span></div>';}
-  set('devrow-'+id, devHtml);
-  set('aval-'+id, '<span class="a-lbl">A balas</span><span class="a-val">'+f(sc.A,1)+' / '+m.A+'</span>');
-  // C interview hint + score
+  // A criterion
+  var el_a=document.getElementById('asc-'+id);if(el_a){el_a.innerHTML='<span class="score-bar-lbl">A balas</span><span class="score-bar-val">'+f(sc.A,1)+' / '+m.A+'</span>';}
+  // B criterion
+  var el_b=document.getElementById('bsc-'+id);if(el_b){el_b.innerHTML='<span class="score-bar-lbl">B balas</span><span class="score-bar-val">'+f(sc.B,1)+' / '+m.B+'</span>';}
+  // D interview hint + score
   var hint=document.getElementById('ivhint-'+id);
-  if(hint){hint.className=sc.CT<8?'iv-warn':'iv-hint';hint.textContent=sc.CT<8?'ATMETAMAS — mažiau nei 8 pt':'Max '+m.C+' pt (9 prist. + 8 kl.)';}
-  set('smC-'+id, '<span class="sm-lbl">C balas</span><span class="sm-val'+(sc.CT<8?' bad':'')+'">'+f(sc.C,1)+' / '+m.C+'</span>');
+  if(hint){hint.className=sc.CT<8?'iv-warn':'iv-hint';hint.textContent=sc.CT<8?'ATMETAMAS — mažiau nei 8 pt':'Max '+m.D+' pt (9 prist. + 8 kl.)';}
+  set('smD-'+id,'<span class="sc-mini-lbl">D balas</span><span class="sc-mini-val'+(sc.CT<8?' bad':'')+'">'+f(sc.D,1)+' / '+m.D+'</span>');
   // Totbar
-  set('totbar-'+id,
-    [['A',f(sc.A,1),m.A],['B',sc.B,m.B],['C',f(sc.C,1),m.C],['D',sc.D,m.D],['E',sc.E,m.E]].map(function(item,i){
-      return(i>0?'<span class="tot-sep">+</span>':'')+'<div class="tot-item"><div class="tot-lbl">'+item[0]+'/'+item[2]+'</div><div class="tot-val">'+item[1]+'</div></div>';
-    }).join('')+
-    '<span class="tot-sep">=</span>'+
-    '<div class="tot-item"><div class="tot-lbl">EN</div><div class="tot-en '+(sc.rejected?'bad':'ok')+'">'+(sc.rejected?'ATMESTAS':f(sc.EN,2))+'</div></div>'+
-    '<div class="tot-price-info">1 et.: <b>'+fe(sc.k1)+'</b><br>2 et.: <b>'+fe(sc.k2)+'</b><br>Bendra: <b>'+fe(sc.k1+sc.k2)+'</b></div>'
-  );
-  // Update winner/rejected state for all other cards too (WP changes affect everyone's A score)
-  suppliers.forEach(function(other) {
-    if (other.id === id) return;
-    var osc = getScores(other, wpMin);
-    var oIsW = !osc.rejected && validSorted.length>0 && validSorted[0].s.id===other.id;
-    var oDev = getDev(osc.wp, avgWP), oIsLow = oDev!==null&&oDev<LOW;
-    cls('scard-'+other.id, 'sup-card'+(osc.rejected?' rejected':'')+(oIsW?' winner':''));
+  set('totbar-'+id,buildTotbar(sc,m,k1,k2));
+  // Update all other cards' A+B scores and winner tags (since k1Min/k2Min changed)
+  suppliers.forEach(function(other){
+    if(other.id===id)return;
+    var osc=getScores(other,k1Min,k2Min);
+    var oIsW=!osc.rejected&&validSorted.length>0&&validSorted[0].s.id===other.id;
+    var oDev=getDevTotal(other,avgTot),oIsLow=oDev!==null&&oDev<LOW;
+    cls('scard-'+other.id,'sup-card'+(osc.rejected?' rejected':'')+(oIsW?' winner':''));
     set('stags-'+other.id,
       (oIsW?'<span class="stag stag-win">Laimėtojas</span>':'')+
       (osc.rejected?'<span class="stag stag-rej">Atmestas</span>':'')+
       (oIsLow&&!osc.rejected?'<span class="stag stag-low">Maža kaina</span>':'')
     );
-    set('aval-'+other.id, '<span class="a-lbl">A balas</span><span class="a-val">'+f(osc.A,1)+' / '+m.A+'</span>');
-    set('totbar-'+other.id,
-      [['A',f(osc.A,1),m.A],['B',osc.B,m.B],['C',f(osc.C,1),m.C],['D',osc.D,m.D],['E',osc.E,m.E]].map(function(item,i){
-        return(i>0?'<span class="tot-sep">+</span>':'')+'<div class="tot-item"><div class="tot-lbl">'+item[0]+'/'+item[2]+'</div><div class="tot-val">'+item[1]+'</div></div>';
-      }).join('')+
-      '<span class="tot-sep">=</span>'+
-      '<div class="tot-item"><div class="tot-lbl">EN</div><div class="tot-en '+(osc.rejected?'bad':'ok')+'">'+(osc.rejected?'ATMESTAS':f(osc.EN,2))+'</div></div>'+
-      '<div class="tot-price-info">1 et.: <b>'+fe(osc.k1)+'</b><br>2 et.: <b>'+fe(osc.k2)+'</b><br>Bendra: <b>'+fe(osc.k1+osc.k2)+'</b></div>'
-    );
+    var oa=document.getElementById('asc-'+other.id);if(oa)oa.innerHTML='<span class="score-bar-lbl">A balas</span><span class="score-bar-val">'+f(osc.A,1)+' / '+m.A+'</span>';
+    var ob=document.getElementById('bsc-'+other.id);if(ob)ob.innerHTML='<span class="score-bar-lbl">B balas</span><span class="score-bar-val">'+f(osc.B,1)+' / '+m.B+'</span>';
+    set('totbar-'+other.id,buildTotbar(osc,m,parseFloat(other.k1)||0,parseFloat(other.k2)||0));
   });
 }
 
-function renderRisks() {
-  var panel = document.getElementById('riskPanel');
-  if (!suppliers.length) { panel.className='risk-panel'; return; }
-  var wpMin=getWpMin(), avgWP=getWpAvg();
-  var sc=suppliers.map(function(s){return{s:s,sc:getScores(s,wpMin)};});
+function buildTotbar(sc,m,k1,k2) {
+  return [['A',f(sc.A,1),m.A],['B',f(sc.B,1),m.B],['C',sc.C,m.C],['D',f(sc.D,1),m.D],['E',sc.E,m.E],['F',sc.F,m.F]].map(function(item,i){
+    return(i>0?'<span class="tot-sep">+</span>':'')+'<div class="tot-item"><div class="tot-lbl">'+item[0]+'/'+item[2]+'</div><div class="tot-val">'+item[1]+'</div></div>';
+  }).join('')+
+  '<span class="tot-sep">=</span>'+
+  '<div class="tot-item"><div class="tot-lbl">EN</div><div class="tot-en '+(sc.rejected?'bad':'ok')+'">'+(sc.rejected?'ATMESTAS':f(sc.EN,2))+'</div></div>'+
+  '<div class="tot-price"><b>Bandymas:</b> '+fe(k1)+'<br><b>Įranga:</b> '+fe(k2)+'<br><b>Bendra:</b> '+fe(k1+k2)+'</div>';
+}
+
+function renderAll(){renderSups();renderResults();renderRisks();}
+
+function renderRisks(){
+  var panel=document.getElementById('riskPanel');
+  if(!suppliers.length){panel.className='risk-panel';return;}
+  var k1Min=getK1Min(),k2Min=getK2Min(),avgTot=getAvgTotal();
+  var sc=suppliers.map(function(s){return{s:s,sc:getScores(s,k1Min,k2Min)};});
   var valid=sc.filter(function(x){return!x.sc.rejected;});
   var rej=sc.filter(function(x){return x.sc.rejected;});
-  var warns=[], isCrit=false;
-  if (valid.length===0) { isCrit=true; warns.push('Visi tiekėjai atmesti — sutartis negali būti sudaryta.'); }
-  else if (valid.length===1) { isCrit=true; warns.push('Tik 1 tinkamas pasiūlymas — rekomenduojama pagrįsti nekonkurenciją.'); }
-  if (valid.length>=2) {
+  var warns=[],isCrit=false;
+  if(valid.length===0){isCrit=true;warns.push('Visi tiekėjai atmesti — sutartis negali būti sudaryta.');}
+  else if(valid.length===1){isCrit=true;warns.push('Tik 1 tinkamas pasiūlymas — rekomenduojama pagrįsti nekonkurenciją.');}
+  if(valid.length>=2){
     var vs=valid.slice().sort(function(a,b){return b.sc.EN-a.sc.EN;});
-    if (Math.abs(vs[0].sc.EN-vs[1].sc.EN)<0.5) warns.push('Lyginiai balai: '+vs[0].s.name+' ('+f(vs[0].sc.EN,2)+') ir '+vs[1].s.name+' ('+f(vs[1].sc.EN,2)+') — skirtumas < 0,5 balo.');
+    if(Math.abs(vs[0].sc.EN-vs[1].sc.EN)<0.5) warns.push('Lyginiai balai: '+vs[0].s.name+' ('+f(vs[0].sc.EN,2)+') ir '+vs[1].s.name+' ('+f(vs[1].sc.EN,2)+') — skirtumas < 0,5 balo.');
   }
-  if (avgWP>0) sc.forEach(function(item){var d=getDev(item.sc.wp,avgWP);if(d!==null&&d<LOW) warns.push(item.s.name+': kaina '+Math.abs(d)+'% žemiau vidurkio — rekomenduojama kainos pagrįstumo vertinimas.');});
-  if (rej.length>0&&valid.length>0) warns.push(rej.length+' tiekėjas (-ai) atmesti (interviu < 8 pt): '+rej.map(function(x){return x.s.name||'—';}).join(', ')+'.');
-  var m = getMax(), msum=m.A+m.B+m.C+m.D+m.E;
-  if (msum!==100) warns.push('Kriterijų balų suma lygi '+msum+' — ji turi būti lygiai 100.');
+  if(avgTot>0) sc.forEach(function(item){var d=getDevTotal(item.s,avgTot);if(d!==null&&d<LOW) warns.push((item.s.name||'Tiekėjas')+': bendra kaina '+Math.abs(d)+'% žemiau vidurkio — rekomenduojama kainos pagrįstumo vertinimas.');});
+  if(rej.length>0&&valid.length>0) warns.push(rej.length+' tiekėjas (-ai) atmesti (interviu < 8 pt): '+rej.map(function(x){return x.s.name||'—';}).join(', ')+'.');
+  var m=getM(),msum=m.A+m.B+m.C+m.D+m.E+m.F;
+  if(msum!==100) warns.push('Kriterijų balų suma lygi '+msum+' — turi būti lygiai 100.');
 
-  if (warns.length===0) {
-    panel.className='risk-panel visible ok';
+  if(warns.length===0){
+    panel.className='risk-panel vis ok';
     document.getElementById('riskIcon').textContent='✓';
     document.getElementById('riskTitle').textContent='Procedūra be nustatytų rizikų — '+valid.length+' tinkamų pasiūlymų';
     document.getElementById('riskItems').innerHTML='';
   } else {
-    panel.className='risk-panel visible '+(isCrit?'crit':'warn');
+    panel.className='risk-panel vis '+(isCrit?'crit':'warn');
     document.getElementById('riskIcon').textContent='⚠';
     document.getElementById('riskTitle').textContent=(isCrit?'Kritinė rizika':'Atkreiptinas dėmesys')+' ('+warns.length+' įspėjim'+(warns.length===1?'as':'ai')+')';
     document.getElementById('riskItems').innerHTML=warns.map(function(w){return '<div class="rp-item"><div class="rp-dot"></div><div>'+w+'</div></div>';}).join('');
   }
 }
 
-function renderSups() {
-  var grid = document.getElementById('suppliersGrid');
-  if (!suppliers.length) { grid.innerHTML='<div style="text-align:center;padding:40px;color:var(--color-graphite-50);font-size:14px">Dar nėra tiekėjų. Paspauskite „Pridėti tiekėją".</div>'; return; }
-  var wpMin=getWpMin(), avgWP=getWpAvg(), m=getMax();
-  var vs=suppliers.map(function(s,i){return{s:s,i:i,sc:getScores(s,wpMin)};}).filter(function(x){return!x.sc.rejected;}).sort(function(a,b){return b.sc.EN-a.sc.EN;});
+function renderSups(){
+  var grid=document.getElementById('supGrid');
+  if(!suppliers.length){grid.innerHTML='<div style="text-align:center;padding:40px;color:var(--gr50);font-size:14px">Dar nėra tiekėjų. Paspauskite „Pridėti tiekėją".</div>';return;}
+  var k1Min=getK1Min(),k2Min=getK2Min(),avgTot=getAvgTotal(),m=getM();
+  var vs=suppliers.map(function(s,i){return{s:s,i:i,sc:getScores(s,k1Min,k2Min)};}).filter(function(x){return!x.sc.rejected;}).sort(function(a,b){return b.sc.EN-a.sc.EN;});
 
   grid.innerHTML=suppliers.map(function(s,idx){
-    var sc=getScores(s,wpMin), wp=calcWP(parseFloat(s.k1)||0,parseFloat(s.k2)||0);
+    var sc=getScores(s,k1Min,k2Min);
+    var k1=parseFloat(s.k1)||0,k2=parseFloat(s.k2)||0;
     var isW=!sc.rejected&&vs.length>0&&vs[0].s.id===s.id;
-    var dev=getDev(wp,avgWP), isLow=dev!==null&&dev<LOW;
-    var devTag='';
-    if(dev!==null&&wp>0){var cls=dev<LOW?'dev-inline dev-low':dev>HIGH?'dev-inline dev-high':'dev-inline dev-norm';var sym=dev>0?'+':'';devTag='<div class="'+cls+'"><span>Nukrypimas nuo vidurkio</span><span>'+sym+dev+'%</span></div>';}
+    var dev=getDevTotal(s,avgTot),isLow=dev!==null&&dev<LOW;
 
     return '<div id="scard-'+s.id+'" class="sup-card'+(sc.rejected?' rejected':'')+(isW?' winner':'')+'">' +
       '<div class="sup-head">' +
-        '<div id="snum-'+s.id+'" class="sup-num">'+String.fromCharCode(64+idx+1)+'</div>' +
+        '<div class="sup-num">'+String.fromCharCode(64+idx+1)+'</div>' +
         '<input id="sn-'+s.id+'" class="sup-name-input" type="text" value="'+s.name+'" placeholder="Tiekėjo pavadinimas" oninput="updSoft('+s.id+',\'name\',this.value)">' +
-        '<div id="stags-'+s.id+'" class="sup-tags">'+(isW?'<span class="stag stag-win">Laimėtojas</span>':'')+(sc.rejected?'<span class="stag stag-rej">Atmestas</span>':'')+(isLow&&!sc.rejected?'<span class="stag stag-low">Maža kaina</span>':'')+'</div>' +
+        '<div id="stags-'+s.id+'" class="sup-tags">' +
+          (isW?'<span class="stag stag-win">Laimėtojas</span>':'')+
+          (sc.rejected?'<span class="stag stag-rej">Atmestas</span>':'')+
+          (isLow&&!sc.rejected?'<span class="stag stag-low">Maža kaina</span>':'') +
+        '</div>' +
         '<button class="rm-btn" onclick="removeSup('+s.id+')">×</button>' +
       '</div>' +
       '<div class="sup-body">' +
-        '<div class="price-block"><div class="pb-title">I kriterijus (A) — Paslaugų kaina, EUR be PVM</div>' +
-          '<div class="pb-stage-lbl"><span class="sb sb1">1 etapas × 0.30</span> Bandymo paslaugos</div>' +
+
+        // A — Bandymo paslaugų kaina
+        '<div class="price-crit">' +
+          '<div class="price-crit-title">I krit. (A) — Bandymo paslaugų kaina, EUR be PVM</div>' +
           '<input class="price-input" type="number" min="0" step="100" value="'+s.k1+'" placeholder="0,00" oninput="updSoft('+s.id+',\'k1\',this.value)">' +
-          '<div id="coef1-'+s.id+'" class="coef-note">'+(s.k1?f((parseFloat(s.k1)||0)*0.30):'—')+' EUR svertinė</div>' +
-          '<div class="pdiv"></div>' +
-          '<div class="pb-stage-lbl"><span class="sb sb2">2 etapas × 0.70</span> Įrangos tiekimas</div>' +
-          '<input class="price-input" type="number" min="0" step="100" value="'+s.k2+'" placeholder="0,00" oninput="updSoft('+s.id+',\'k2\',this.value)">' +
-          '<div id="coef2-'+s.id+'" class="coef-note">'+(s.k2?f((parseFloat(s.k2)||0)*0.70):'—')+' EUR svertinė</div>' +
-          '<div class="pdiv"></div>' +
-          '<div class="wp-row"><div><div class="wp-lbl">Svertinė kaina (WP)</div></div><div id="wpval-'+s.id+'" class="wp-val">'+(wp?f(wp)+' EUR':'—')+'</div></div>' +
-          '<div id="devrow-'+s.id+'">'+devTag+'</div>' +
-          '<div id="aval-'+s.id+'" class="a-row"><span class="a-lbl">A balas</span><span class="a-val">'+f(sc.A,1)+' / '+m.A+'</span></div>' +
+          '<div class="price-note" id="k1note-'+s.id+'">'+(k1?fe(k1):'—')+'</div>' +
+          '<div id="asc-'+s.id+'" class="score-bar"><span class="score-bar-lbl">A balas</span><span class="score-bar-val">'+f(sc.A,1)+' / '+m.A+'</span></div>' +
         '</div>' +
-        '<div class="crit-block"><div class="cb-lbl">II kriterijus (B)</div><div class="cb-name">Pristatymo terminas</div>' +
+
+        // B — Įrangos kaina
+        '<div class="price-crit">' +
+          '<div class="price-crit-title">II krit. (B) — Įrangos kaina, EUR be PVM</div>' +
+          '<input class="price-input" type="number" min="0" step="100" value="'+s.k2+'" placeholder="0,00" oninput="updSoft('+s.id+',\'k2\',this.value)">' +
+          '<div class="price-note" id="k2note-'+s.id+'">'+(k2?fe(k2):'—')+'</div>' +
+          '<div id="bsc-'+s.id+'" class="score-bar"><span class="score-bar-lbl">B balas</span><span class="score-bar-val">'+f(sc.B,1)+' / '+m.B+'</span></div>' +
+        '</div>' +
+
+        // C — Pristatymo terminas
+        '<div class="crit-block">' +
+          '<div class="cb-lbl">III kriterijus (C)</div><div class="cb-name">Pristatymo terminas</div>' +
           '<select class="crit-select" onchange="upd('+s.id+',\'delivery\',parseInt(this.value))">' +
-            '<option value="3"'+(s.delivery<=3?' selected':'')+'>≤ 3 mėn. — '+m.B+' pt</option>' +
-            '<option value="4"'+(s.delivery===4?' selected':'')+'>4 mėn. — '+Math.round(m.B/2)+' pt</option>' +
+            '<option value="3"'+(s.delivery<=3?' selected':'')+'>≤ 3 mėn. — '+m.C+' pt</option>' +
+            '<option value="4"'+(s.delivery===4?' selected':'')+'>4 mėn. — '+Math.round(m.C/2)+' pt</option>' +
             '<option value="5"'+(s.delivery>=5?' selected':'')+'>5 mėn. — 0 pt</option>' +
           '</select>' +
-          '<div class="score-mini"><span class="sm-lbl">B balas</span><span class="sm-val">'+sc.B+' / '+m.B+'</span></div>' +
+          '<div class="sc-mini"><span class="sc-mini-lbl">C balas</span><span class="sc-mini-val">'+sc.C+' / '+m.C+'</span></div>' +
         '</div>' +
-        '<div class="crit-block"><div class="cb-lbl">III kriterijus (C)</div><div class="cb-name">Interviu su koordinatoriumi</div>' +
-          '<input class="iv-input" id="iv-'+s.id+'" type="number" min="0" max="'+m.C+'" step="0.5" value="'+s.interview+'" oninput="document.getElementById(\'ivr-'+s.id+'\').value=this.value;updSoft('+s.id+',\'interview\',parseFloat(this.value)||0)">' +
-          '<input type="range" id="ivr-'+s.id+'" class="iv-range" min="0" max="'+m.C+'" step="0.5" value="'+s.interview+'" oninput="document.getElementById(\'iv-'+s.id+'\').value=this.value;updSoft('+s.id+',\'interview\',parseFloat(this.value))">' +
-          '<div id="ivhint-'+s.id+'" class="'+(sc.CT<8?'iv-warn':'iv-hint')+'">'+(sc.CT<8?'ATMETAMAS — mažiau nei 8 pt':'Max '+m.C+' pt (9 prist. + 8 kl.)')+'</div>' +
-          '<div id="smC-'+s.id+'" class="score-mini"><span class="sm-lbl">C balas</span><span class="sm-val'+(sc.CT<8?' bad':'')+'">'+f(sc.C,1)+' / '+m.C+'</span></div>' +
+
+        // D — Interviu
+        '<div class="crit-block">' +
+          '<div class="cb-lbl">IV kriterijus (D)</div><div class="cb-name">Interviu su koordinatoriumi</div>' +
+          '<input class="iv-input" id="iv-'+s.id+'" type="number" min="0" max="'+m.D+'" step="0.5" value="'+s.interview+'" oninput="document.getElementById(\'ivr-'+s.id+'\').value=this.value;updSoft('+s.id+',\'interview\',parseFloat(this.value)||0)">' +
+          '<input type="range" id="ivr-'+s.id+'" class="iv-range" min="0" max="'+m.D+'" step="0.5" value="'+s.interview+'" oninput="document.getElementById(\'iv-'+s.id+'\').value=this.value;updSoft('+s.id+',\'interview\',parseFloat(this.value))">' +
+          '<div id="ivhint-'+s.id+'" class="'+(sc.CT<8?'iv-warn':'iv-hint')+'">'+(sc.CT<8?'ATMETAMAS — mažiau nei 8 pt':'Max '+m.D+' pt (9 prist. + 8 kl.)')+'</div>' +
+          '<div id="smD-'+s.id+'" class="sc-mini"><span class="sc-mini-lbl">D balas</span><span class="sc-mini-val'+(sc.CT<8?' bad':'')+'">'+f(sc.D,1)+' / '+m.D+'</span></div>' +
         '</div>' +
-        '<div class="crit-block"><div class="cb-lbl">IV kriterijus (D)</div><div class="cb-name">MS Active Directory</div>' +
-          '<div class="toggle-wrap"><button class="tbtn yes'+(s.adYes?' on':'')+'" onclick="upd('+s.id+',\'adYes\',true)">Taip '+m.D+'pt</button><button class="tbtn no'+(!s.adYes?' on':'')+'" onclick="upd('+s.id+',\'adYes\',false)">Ne 0pt</button></div>' +
-          '<div class="score-mini"><span class="sm-lbl">D balas</span><span class="sm-val">'+sc.D+' / '+m.D+'</span></div>' +
+
+        // E — AD
+        '<div class="crit-block">' +
+          '<div class="cb-lbl">V kriterijus (E)</div><div class="cb-name">MS Active Directory</div>' +
+          '<div class="toggle-wrap"><button class="tbtn yes'+(s.adYes?' on':'')+'" onclick="upd('+s.id+',\'adYes\',true)">Taip '+m.E+'pt</button><button class="tbtn no'+(!s.adYes?' on':'')+'" onclick="upd('+s.id+',\'adYes\',false)">Ne 0pt</button></div>' +
+          '<div class="sc-mini"><span class="sc-mini-lbl">E balas</span><span class="sc-mini-val">'+sc.E+' / '+m.E+'</span></div>' +
         '</div>' +
-        '<div class="crit-block"><div class="cb-lbl">V kriterijus (E)</div><div class="cb-name">Meteostotis</div>' +
-          '<div class="toggle-wrap"><button class="tbtn yes'+(s.meteoYes?' on':'')+'" onclick="upd('+s.id+',\'meteoYes\',true)">Taip '+m.E+'pt</button><button class="tbtn no'+(!s.meteoYes?' on':'')+'" onclick="upd('+s.id+',\'meteoYes\',false)">Ne 0pt</button></div>' +
-          '<div class="score-mini"><span class="sm-lbl">E balas</span><span class="sm-val">'+sc.E+' / '+m.E+'</span></div>' +
+
+        // F — Meteo
+        '<div class="crit-block">' +
+          '<div class="cb-lbl">VI kriterijus (F)</div><div class="cb-name">Meteostotis</div>' +
+          '<div class="toggle-wrap"><button class="tbtn yes'+(s.meteoYes?' on':'')+'" onclick="upd('+s.id+',\'meteoYes\',true)">Taip '+m.F+'pt</button><button class="tbtn no'+(!s.meteoYes?' on':'')+'" onclick="upd('+s.id+',\'meteoYes\',false)">Ne 0pt</button></div>' +
+          '<div class="sc-mini"><span class="sc-mini-lbl">F balas</span><span class="sc-mini-val">'+sc.F+' / '+m.F+'</span></div>' +
         '</div>' +
       '</div>' +
-      '<div class="sup-footer"><div id="totbar-'+s.id+'" class="totbar">' +
-        [['A',f(sc.A,1),m.A],['B',sc.B,m.B],['C',f(sc.C,1),m.C],['D',sc.D,m.D],['E',sc.E,m.E]].map(function(item,i){
-          return(i>0?'<span class="tot-sep">+</span>':'')+'<div class="tot-item"><div class="tot-lbl">'+item[0]+'/'+item[2]+'</div><div class="tot-val">'+item[1]+'</div></div>';
-        }).join('')+
-        '<span class="tot-sep">=</span>' +
-        '<div class="tot-item"><div class="tot-lbl">EN</div><div class="tot-en '+(sc.rejected?'bad':'ok')+'">'+(sc.rejected?'ATMESTAS':f(sc.EN,2))+'</div></div>' +
-        '<div class="tot-price-info">1 et.: <b>'+fe(sc.k1)+'</b><br>2 et.: <b>'+fe(sc.k2)+'</b><br>Bendra: <b>'+fe(sc.k1+sc.k2)+'</b></div>' +
-      '</div></div></div>';
+      '<div class="sup-footer"><div id="totbar-'+s.id+'" class="totbar">'+buildTotbar(sc,m,k1,k2)+'</div></div>' +
+    '</div>';
   }).join('');
 }
 
-function renderResults() {
-  var tbody=document.getElementById('resultsBody'), note=document.getElementById('resultsNote');
-  if (!suppliers.length) { tbody.innerHTML='<tr><td colspan="12" style="text-align:center;padding:28px;color:var(--color-graphite-50);font-style:italic">Pridėkite bent vieną tiekėją</td></tr>'; note.textContent='Pridėkite pasiūlymus'; return; }
-  var wpMin=getWpMin(), avgWP=getWpAvg(), m=getMax();
-  var sc=suppliers.map(function(s,i){return{s:s,i:i,sc:getScores(s,wpMin)};});
+function renderResults(){
+  var tbody=document.getElementById('resBody'),note=document.getElementById('resNote');
+  if(!suppliers.length){tbody.innerHTML='<tr><td colspan="12" style="text-align:center;padding:26px;color:var(--gr50);font-style:italic">Pridėkite bent vieną tiekėją</td></tr>';note.textContent='Pridėkite pasiūlymus';return;}
+  var k1Min=getK1Min(),k2Min=getK2Min(),avgTot=getAvgTotal(),m=getM();
+  var sc=suppliers.map(function(s,i){return{s:s,i:i,sc:getScores(s,k1Min,k2Min)};});
   var valid=sc.filter(function(x){return!x.sc.rejected;}).sort(function(a,b){return b.sc.EN-a.sc.EN;});
   var rej=sc.filter(function(x){return x.sc.rejected;});
-  var sorted=valid.concat(rej), maxEN=valid.length?valid[0].sc.EN:0;
+  var sorted=valid.concat(rej),maxEN=valid.length?valid[0].sc.EN:0;
   tbody.innerHTML=sorted.map(function(item,rank){
-    var sc=item.sc, s=item.s, isF=!sc.rejected&&rank===0&&valid.length>0;
+    var sc=item.sc,s=item.s,isF=!sc.rejected&&rank===0&&valid.length>0;
     var rn=sc.rejected?null:rank+1;
     var rb=sc.rejected?'<span class="rbadge rbrej">ATM</span>':rn===1?'<span class="rbadge rb1">1</span>':rn===2?'<span class="rbadge rb2">2</span>':rn===3?'<span class="rbadge rb3">3</span>':'<span class="rbadge rbn">'+rn+'</span>';
     var pct=maxEN?Math.round(sc.EN/maxEN*100):0;
-    var dev=getDev(sc.wp,avgWP), devHtml='<span style="color:var(--color-graphite-50);font-size:11px">—</span>';
-    if(dev!==null&&sc.wp>0){var cls=dev<LOW?'dtag dtag-low':dev>HIGH?'dtag dtag-high':'dtag dtag-norm';var sym=dev>0?'+':'';devHtml='<span class="'+cls+'">'+sym+dev+'%</span>'+(dev<LOW?' <span style="font-size:11px;color:#8a5c00">Vertinti</span>':'');}
+    var dev=getDevTotal(s,avgTot),devHtml='<span style="color:var(--gr50);font-size:11px">—</span>';
+    if(dev!==null&&(sc.k1>0||sc.k2>0)){var dc=dev<LOW?'dtag dtag-low':dev>HIGH?'dtag dtag-high':'dtag dtag-norm';var sym=dev>0?'+':'';devHtml='<span class="'+dc+'">'+sym+dev+'%</span>'+(dev<LOW?' <span style="font-size:11px;color:#8a5c00">Vertinti</span>':'');}
     return '<tr class="'+(isF?'win-row':'')+(sc.rejected?' rej-row':'')+'">' +
       '<td>'+rb+'</td><td><b>'+(s.name||'—')+'</b></td>' +
-      '<td class="sc">'+fe(sc.k1)+'</td><td class="sc">'+fe(sc.k2)+'</td><td class="sc">'+(sc.wp?f(sc.wp)+' EUR':'—')+'</td>' +
-      '<td class="sc" style="color:var(--color-emerald-120)">'+f(sc.A,1)+'</td>' +
-      '<td class="sc">'+sc.B+'</td><td class="sc'+(sc.CT<8?' bad':'')+'">'+f(sc.C,1)+'</td>' +
-      '<td class="sc">'+sc.D+'</td><td class="sc">'+sc.E+'</td>' +
-      '<td>'+(sc.rejected?'<span style="color:var(--color-error);font-weight:800">ATMESTAS</span>':'<div class="bar-wrap"><div class="bar"><div class="bar-fill'+(isF?' top':'')+'" style="width:'+pct+'%"></div></div><span class="sc total">'+f(sc.EN,2)+'</span></div>')+'</td>' +
-      '<td>'+devHtml+'</td></tr>';
+      '<td class="sc">'+fe(sc.k1)+'</td>' +
+      '<td class="sc">'+fe(sc.k2)+'</td>' +
+      '<td class="sc" style="color:var(--em120)">'+f(sc.A,1)+'</td>' +
+      '<td class="sc" style="color:var(--em120)">'+f(sc.B,1)+'</td>' +
+      '<td class="sc">'+sc.C+'</td>' +
+      '<td class="sc'+(sc.CT<8?' bad':'')+'">'+f(sc.D,1)+'</td>' +
+      '<td class="sc">'+sc.E+'</td>' +
+      '<td class="sc">'+sc.F+'</td>' +
+      '<td>'+(sc.rejected?'<span style="color:var(--err);font-weight:800">ATMESTAS</span>':'<div class="bar-wrap"><div class="bar"><div class="bar-fill'+(isF?' top':'')+'" style="width:'+pct+'%"></div></div><span class="sc total">'+f(sc.EN,2)+'</span></div>')+'</td>' +
+      '<td>'+devHtml+'</td>' +
+    '</tr>';
   }).join('');
   note.textContent=valid.length+' tinkamų · '+rej.length+' atmesta · Viso '+suppliers.length+' pasiūlymų';
 }
 
-function openProtocol() {
-  if (!suppliers.length) { alert('Pridėkite bent vieną tiekėją prieš generuojant protokolą.'); return; }
-  var wpMin=getWpMin(), avgWP=getWpAvg(), m=getMax();
-  var sc=suppliers.map(function(s){return{s:s,sc:getScores(s,wpMin)};});
+function openProtocol(){
+  if(!suppliers.length){alert('Pridėkite bent vieną tiekėją prieš generuojant protokolą.');return;}
+  var k1Min=getK1Min(),k2Min=getK2Min(),avgTot=getAvgTotal(),m=getM();
+  var sc=suppliers.map(function(s){return{s:s,sc:getScores(s,k1Min,k2Min)};});
   var valid=sc.filter(function(x){return!x.sc.rejected;}).sort(function(a,b){return b.sc.EN-a.sc.EN;});
   var rej=sc.filter(function(x){return x.sc.rejected;});
-  var sorted=valid.concat(rej), winner=valid.length?valid[0]:null;
+  var sorted=valid.concat(rej),winner=valid.length?valid[0]:null;
   var piName=document.getElementById('piName').value||'—';
   var piValue=document.getElementById('piValue').value;
+  var today=new Date().toLocaleDateString('lt-LT');
 
   var risks=[];
-  var msum=m.A+m.B+m.C+m.D+m.E;
+  var msum=m.A+m.B+m.C+m.D+m.E+m.F;
   if(msum!==100) risks.push('Kriterijų balų suma lygi '+msum+' (turi būti 100).');
   if(valid.length===0) risks.push('Visi tiekėjai atmesti — sutartis negali būti sudaryta.');
   else if(valid.length===1) risks.push('Gautas tik vienas tinkamas pasiūlymas.');
   if(valid.length>=2){var s1=valid[0],s2=valid[1];if(Math.abs(s1.sc.EN-s2.sc.EN)<0.5) risks.push('1 ir 2 eilės balai skiriasi mažiau nei 0,5 balo.');}
-  sc.forEach(function(item){var d=getDev(item.sc.wp,avgWP);if(d!==null&&d<LOW) risks.push((item.s.name||'Tiekėjas')+': kaina '+Math.abs(d)+'% žemiau vidurkio.');});
-  var riskHtml=risks.length?'<div class="proto-risk"><div class="proto-risk-title">Atkreiptinas komisijos dėmesys</div>'+risks.map(function(r){return '<div style="margin-top:3px">• '+r+'</div>';}).join('')+'</div>':'';
+  sc.forEach(function(item){var d=getDevTotal(item.s,avgTot);if(d!==null&&d<LOW) risks.push((item.s.name||'Tiekėjas')+': bendra kaina '+Math.abs(d)+'% žemiau vidurkio.');});
+  var riskHtml=risks.length?'<div class="p-risk"><div class="p-risk-t">Atkreiptinas komisijos dėmesys</div>'+risks.map(function(r){return '<div style="margin-top:3px">• '+r+'</div>';}).join('')+'</div>':'';
 
   var trows=sorted.map(function(item,rank){
     var sc=item.sc,s=item.s,isF=!sc.rejected&&rank===0&&valid.length>0;
-    var dev=getDev(sc.wp,avgWP),ds=dev!==null&&sc.wp>0?(dev>0?'+':'')+dev+'%':'—';
+    var dev=getDevTotal(s,avgTot),ds=dev!==null&&(sc.k1>0||sc.k2>0)?(dev>0?'+':'')+dev+'%':'—';
     return '<tr class="'+(isF?'pw':'')+(sc.rejected?' pr':'')+'">' +
       '<td>'+(sc.rejected?'Atm.':rank+1)+'</td><td>'+(s.name||'—')+'</td>' +
-      '<td>'+fe(sc.k1)+'</td><td>'+fe(sc.k2)+'</td><td>'+(sc.wp?f(sc.wp)+' EUR':'—')+'</td>' +
-      '<td>'+f(sc.A,1)+'</td><td>'+sc.B+'</td><td style="'+(sc.CT<8?'color:#DB354A;font-weight:800':'')+'">'+f(sc.C,1)+'</td>' +
-      '<td>'+sc.D+'</td><td>'+sc.E+'</td>' +
+      '<td>'+fe(sc.k1)+'</td><td>'+fe(sc.k2)+'</td>' +
+      '<td>'+f(sc.A,1)+'</td><td>'+f(sc.B,1)+'</td><td>'+sc.C+'</td>' +
+      '<td style="'+(sc.CT<8?'color:#DB354A;font-weight:800':'')+'">'+f(sc.D,1)+'</td>' +
+      '<td>'+sc.E+'</td><td>'+sc.F+'</td>' +
       '<td style="font-weight:800;'+(sc.rejected?'color:#DB354A':'color:#2E3641')+'">'+(sc.rejected?'ATMESTAS':f(sc.EN,2))+'</td>' +
       '<td>'+ds+'</td></tr>';
   }).join('');
 
-  var today=new Date().toLocaleDateString('lt-LT');
   document.getElementById('protocolContent').innerHTML=
-    '<div class="proto-hdr"><div><div class="proto-org">LITGRID AB</div><div class="proto-org-sub">Elektros energijos perdavimo sistemos operatorius</div></div>' +
-    '<div class="proto-doc">Pirkimo komisijos sprendimas<br>Data: <b>'+today+'</b></div></div>' +
-    '<div class="proto-title"><h2>Ekonomiškai naudingiausio pasiūlymo vertinimo protokolas</h2><p>'+piName+'</p></div>' +
-    '<div class="proto-meta">' +
-      '<div><div class="pm-lbl">Pirkimo pavadinimas</div><div class="pm-val">'+piName+'</div></div>' +
-      '<div><div class="pm-lbl">Numatoma vertė</div><div class="pm-val">'+(piValue?f(parseFloat(piValue))+' EUR be PVM':'—')+'</div></div>' +
-      '<div><div class="pm-lbl">Gauta pasiūlymų</div><div class="pm-val">'+suppliers.length+' ('+valid.length+' tinkamų, '+rej.length+' atmesta)</div></div>' +
-      '<div><div class="pm-lbl">Balų sistema</div><div class="pm-val">A='+m.A+' B='+m.B+' C='+m.C+' D='+m.D+' E='+m.E+' (suma='+(m.A+m.B+m.C+m.D+m.E)+')</div></div>' +
+    '<div class="ph"><div><div class="ph-org">LITGRID AB</div><div class="ph-sub">Elektros energijos perdavimo sistemos operatorius</div></div>' +
+    '<div class="ph-doc">Pirkimo komisijos sprendimas<br>Data: <b>'+today+'</b></div></div>' +
+    '<div class="pt"><h2>Ekonomiškai naudingiausio pasiūlymo vertinimo protokolas</h2><p>'+piName+'</p></div>' +
+    '<div class="pm">' +
+      '<div><div class="pm-l">Pirkimo pavadinimas</div><div class="pm-v">'+piName+'</div></div>' +
+      '<div><div class="pm-l">Numatoma vertė</div><div class="pm-v">'+(piValue?f(parseFloat(piValue))+' EUR be PVM':'—')+'</div></div>' +
+      '<div><div class="pm-l">Gauta pasiūlymų</div><div class="pm-v">'+suppliers.length+' ('+valid.length+' tinkamų, '+rej.length+' atmesta)</div></div>' +
+      '<div><div class="pm-l">Balų sistema</div><div class="pm-v">A='+m.A+' B='+m.B+' C='+m.C+' D='+m.D+' E='+m.E+' F='+m.F+'</div></div>' +
     '</div>' +
     riskHtml+
-    '<div class="proto-sec"><h3>Pasiūlymų vertinimo rezultatai</h3>' +
-      '<table class="ptable"><thead><tr>' +
-        '<th style="text-align:left;width:34px">Eilė</th><th style="text-align:left">Tiekėjas</th>' +
-        '<th>1 et. EUR</th><th>2 et. EUR</th><th>WP EUR</th>' +
-        '<th>A/'+m.A+'</th><th>B/'+m.B+'</th><th>C/'+m.C+'</th><th>D/'+m.D+'</th><th>E/'+m.E+'</th>' +
+    '<div class="ps"><h3>Pasiūlymų vertinimo rezultatai</h3>' +
+      '<table class="ptab"><thead><tr>' +
+        '<th style="text-align:left;width:30px">Eilė</th><th style="text-align:left">Tiekėjas</th>' +
+        '<th>Bandymas EUR</th><th>Įranga EUR</th>' +
+        '<th>A/'+m.A+'</th><th>B/'+m.B+'</th><th>C/'+m.C+'</th><th>D/'+m.D+'</th><th>E/'+m.E+'</th><th>F/'+m.F+'</th>' +
         '<th>EN/100</th><th>vs.vid.</th>' +
       '</tr></thead><tbody>'+trows+'</tbody></table></div>' +
-    (winner?'<div class="proto-sec"><h3>Komisijos sprendimas</h3>' +
-      '<p style="font-size:13px;line-height:1.8">Atlikus vertinimą, komisija konstatuoja, kad <b>'+(winner.s.name||'—')+'</b> pateikė ekonomiškai naudingiausią pasiūlymą — <b>'+f(winner.sc.EN,2)+' balo</b>. Bendra kaina: <b>'+fe(winner.sc.k1+winner.sc.k2)+'</b> (1 etapas: '+fe(winner.sc.k1)+', 2 etapas: '+fe(winner.sc.k2)+').</p>' +
-      '<p style="margin-top:8px;font-size:13px">Siūloma sudaryti sutartį su <b>'+(winner.s.name||'—')+'</b>.</p></div>':'') +
-    '<div class="proto-sec"><h3>Vertinimo metodas</h3>' +
-      '<p style="font-size:12px;color:#737483;line-height:1.8">WP = (K₁ × 0,30) + (K₂ × 0,70); A = '+m.A+' × (WPmin / WPp). B: ≤3 mėn.='+m.B+' pt, 4 mėn.='+Math.round(m.B/2)+' pt, 5 mėn.=0 pt. C=interviu; slenkstis 8 pt. D=AD integracija. E=Meteostotis.</p></div>' +
-    '<div class="sign-grid"><div class="sign-item"><div class="sign-role">Komisijos pirmininkas</div><div class="sign-line"></div><div style="font-size:10px;color:#C7CDD3">Vardas, parašas, data</div></div>' +
-    '<div class="sign-item"><div class="sign-role">Komisijos narys</div><div class="sign-line"></div><div style="font-size:10px;color:#C7CDD3">Vardas, parašas, data</div></div>' +
-    '<div class="sign-item"><div class="sign-role">Komisijos narys</div><div class="sign-line"></div><div style="font-size:10px;color:#C7CDD3">Vardas, parašas, data</div></div></div>' +
-    '<div class="proto-footer"><span>Sugeneruota: '+new Date().toLocaleString('lt-LT')+'</span><span>Litgrid AB · Pirkimų skyrius</span></div>';
+    (winner?'<div class="ps"><h3>Komisijos sprendimas</h3>' +
+      '<p style="font-size:13px;line-height:1.8">Atlikus vertinimą, komisija konstatuoja, kad <b>'+(winner.s.name||'—')+'</b> pateikė ekonomiškai naudingiausią pasiūlymą — <b>'+f(winner.sc.EN,2)+' balo</b>. Bandymo paslaugų kaina: <b>'+fe(winner.sc.k1)+'</b>, įrangos kaina: <b>'+fe(winner.sc.k2)+'</b>, bendra: <b>'+fe(winner.sc.k1+winner.sc.k2)+'</b>.</p>' +
+      '<p style="margin-top:8px;font-size:13px">Siūloma sudaryti sutartį su <b>'+(winner.s.name||'—')+'</b>.</p></div>':'')+
+    '<div class="ps"><h3>Vertinimo metodas</h3>' +
+      '<p style="font-size:12px;color:#737483;line-height:1.8">A = '+m.A+' × (Amin/Ap) — bandymo paslaugų kaina. B = '+m.B+' × (Bmin/Bp) — įrangos kaina. C: ≤3mėn='+m.C+' pt, 4mėn='+Math.round(m.C/2)+' pt, 5mėn=0. D = interviu, slenkstis 8 pt. E = MS AD. F = Meteostotis.</p></div>' +
+    '<div class="sign-g">' +
+      '<div class="sign-i"><div class="sign-r">Komisijos pirmininkas</div><div class="sign-l"></div><div style="font-size:10px;color:#C7CDD3">Vardas, parašas, data</div></div>' +
+      '<div class="sign-i"><div class="sign-r">Komisijos narys</div><div class="sign-l"></div><div style="font-size:10px;color:#C7CDD3">Vardas, parašas, data</div></div>' +
+      '<div class="sign-i"><div class="sign-r">Komisijos narys</div><div class="sign-l"></div><div style="font-size:10px;color:#C7CDD3">Vardas, parašas, data</div></div>' +
+    '</div>' +
+    '<div class="p-foot"><span>Sugeneruota: '+new Date().toLocaleString('lt-LT')+'</span><span>Litgrid AB · Pirkimų skyrius · DAS-TPI v4</span></div>';
 
-  document.getElementById('modalOverlay').className='modal-overlay open';
+  document.getElementById('modalOv').className='modal-ov open';
 }
-function closeModal() { document.getElementById('modalOverlay').className='modal-overlay'; }
+function closeModal(){document.getElementById('modalOv').className='modal-ov';}
 </script>
 </body>
 </html>
