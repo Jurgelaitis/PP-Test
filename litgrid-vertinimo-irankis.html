@@ -756,8 +756,87 @@ function addSupplier() {
   }, 50);
 }
 function removeSup(id) { suppliers=suppliers.filter(function(s){return s.id!==id;}); renderAll(); }
+// Full re-render — only for structural changes (add/remove/toggle/select)
 function upd(id, field, val) { var s=suppliers.find(function(x){return x.id===id;}); if(s){s[field]=val;renderAll();} }
 function renderAll() { renderSups(); renderResults(); renderRisks(); }
+
+// Soft update — for text/number inputs: updates only computed elements, preserves focus
+function updSoft(id, field, val) {
+  var s = suppliers.find(function(x){return x.id===id;});
+  if (!s) return;
+  s[field] = val;
+  updateSupComputed(id);
+  renderResults();
+  renderRisks();
+}
+
+function updateSupComputed(id) {
+  var s = suppliers.find(function(x){return x.id===id;});
+  if (!s) return;
+  var wpMin = getWpMin(), avgWP = getWpAvg(), m = getMax();
+  var sc = getScores(s, wpMin);
+  var wp = calcWP(parseFloat(s.k1)||0, parseFloat(s.k2)||0);
+  var dev = getDev(wp, avgWP), isLow = dev!==null&&dev<LOW;
+  var validSorted = suppliers.map(function(x){return{s:x,sc:getScores(x,wpMin)};})
+    .filter(function(x){return !x.sc.rejected;})
+    .sort(function(a,b){return b.sc.EN-a.sc.EN;});
+  var isW = !sc.rejected && validSorted.length>0 && validSorted[0].s.id===id;
+
+  function set(eid, html) { var el=document.getElementById(eid); if(el) el.innerHTML=html; }
+  function cls(eid, c)  { var el=document.getElementById(eid); if(el) el.className=c; }
+
+  // Card class + num colour driven by CSS .rejected .sup-num
+  cls('scard-'+id, 'sup-card'+(sc.rejected?' rejected':'')+(isW?' winner':''));
+  // Tags
+  set('stags-'+id,
+    (isW?'<span class="stag stag-win">Laimėtojas</span>':'')+
+    (sc.rejected?'<span class="stag stag-rej">Atmestas</span>':'')+
+    (isLow&&!sc.rejected?'<span class="stag stag-low">Maža kaina</span>':'')
+  );
+  // Price computed
+  var el1=document.getElementById('coef1-'+id); if(el1) el1.textContent=(s.k1?f((parseFloat(s.k1)||0)*0.30):'—')+' EUR svertinė';
+  var el2=document.getElementById('coef2-'+id); if(el2) el2.textContent=(s.k2?f((parseFloat(s.k2)||0)*0.70):'—')+' EUR svertinė';
+  var elwp=document.getElementById('wpval-'+id); if(elwp) elwp.textContent=wp?f(wp)+' EUR':'—';
+  var devHtml='';
+  if(dev!==null&&wp>0){var dc=dev<LOW?'dev-inline dev-low':dev>HIGH?'dev-inline dev-high':'dev-inline dev-norm';var sym=dev>0?'+':'';devHtml='<div class="'+dc+'"><span>Nukrypimas nuo vidurkio</span><span>'+sym+dev+'%</span></div>';}
+  set('devrow-'+id, devHtml);
+  set('aval-'+id, '<span class="a-lbl">A balas</span><span class="a-val">'+f(sc.A,1)+' / '+m.A+'</span>');
+  // C interview hint + score
+  var hint=document.getElementById('ivhint-'+id);
+  if(hint){hint.className=sc.CT<8?'iv-warn':'iv-hint';hint.textContent=sc.CT<8?'ATMETAMAS — mažiau nei 8 pt':'Max '+m.C+' pt (9 prist. + 8 kl.)';}
+  set('smC-'+id, '<span class="sm-lbl">C balas</span><span class="sm-val'+(sc.CT<8?' bad':'')+'">'+f(sc.C,1)+' / '+m.C+'</span>');
+  // Totbar
+  set('totbar-'+id,
+    [['A',f(sc.A,1),m.A],['B',sc.B,m.B],['C',f(sc.C,1),m.C],['D',sc.D,m.D],['E',sc.E,m.E]].map(function(item,i){
+      return(i>0?'<span class="tot-sep">+</span>':'')+'<div class="tot-item"><div class="tot-lbl">'+item[0]+'/'+item[2]+'</div><div class="tot-val">'+item[1]+'</div></div>';
+    }).join('')+
+    '<span class="tot-sep">=</span>'+
+    '<div class="tot-item"><div class="tot-lbl">EN</div><div class="tot-en '+(sc.rejected?'bad':'ok')+'">'+(sc.rejected?'ATMESTAS':f(sc.EN,2))+'</div></div>'+
+    '<div class="tot-price-info">1 et.: <b>'+fe(sc.k1)+'</b><br>2 et.: <b>'+fe(sc.k2)+'</b><br>Bendra: <b>'+fe(sc.k1+sc.k2)+'</b></div>'
+  );
+  // Update winner/rejected state for all other cards too (WP changes affect everyone's A score)
+  suppliers.forEach(function(other) {
+    if (other.id === id) return;
+    var osc = getScores(other, wpMin);
+    var oIsW = !osc.rejected && validSorted.length>0 && validSorted[0].s.id===other.id;
+    var oDev = getDev(osc.wp, avgWP), oIsLow = oDev!==null&&oDev<LOW;
+    cls('scard-'+other.id, 'sup-card'+(osc.rejected?' rejected':'')+(oIsW?' winner':''));
+    set('stags-'+other.id,
+      (oIsW?'<span class="stag stag-win">Laimėtojas</span>':'')+
+      (osc.rejected?'<span class="stag stag-rej">Atmestas</span>':'')+
+      (oIsLow&&!osc.rejected?'<span class="stag stag-low">Maža kaina</span>':'')
+    );
+    set('aval-'+other.id, '<span class="a-lbl">A balas</span><span class="a-val">'+f(osc.A,1)+' / '+m.A+'</span>');
+    set('totbar-'+other.id,
+      [['A',f(osc.A,1),m.A],['B',osc.B,m.B],['C',f(osc.C,1),m.C],['D',osc.D,m.D],['E',osc.E,m.E]].map(function(item,i){
+        return(i>0?'<span class="tot-sep">+</span>':'')+'<div class="tot-item"><div class="tot-lbl">'+item[0]+'/'+item[2]+'</div><div class="tot-val">'+item[1]+'</div></div>';
+      }).join('')+
+      '<span class="tot-sep">=</span>'+
+      '<div class="tot-item"><div class="tot-lbl">EN</div><div class="tot-en '+(osc.rejected?'bad':'ok')+'">'+(osc.rejected?'ATMESTAS':f(osc.EN,2))+'</div></div>'+
+      '<div class="tot-price-info">1 et.: <b>'+fe(osc.k1)+'</b><br>2 et.: <b>'+fe(osc.k2)+'</b><br>Bendra: <b>'+fe(osc.k1+osc.k2)+'</b></div>'
+    );
+  });
+}
 
 function renderRisks() {
   var panel = document.getElementById('riskPanel');
@@ -804,26 +883,26 @@ function renderSups() {
     var devTag='';
     if(dev!==null&&wp>0){var cls=dev<LOW?'dev-inline dev-low':dev>HIGH?'dev-inline dev-high':'dev-inline dev-norm';var sym=dev>0?'+':'';devTag='<div class="'+cls+'"><span>Nukrypimas nuo vidurkio</span><span>'+sym+dev+'%</span></div>';}
 
-    return '<div class="sup-card'+(sc.rejected?' rejected':'')+(isW?' winner':'')+'">' +
+    return '<div id="scard-'+s.id+'" class="sup-card'+(sc.rejected?' rejected':'')+(isW?' winner':'')+'">' +
       '<div class="sup-head">' +
-        '<div class="sup-num">'+String.fromCharCode(64+idx+1)+'</div>' +
-        '<input id="sn-'+s.id+'" class="sup-name-input" type="text" value="'+s.name+'" placeholder="Tiekėjo pavadinimas" oninput="upd('+s.id+',\'name\',this.value)">' +
-        '<div class="sup-tags">'+(isW?'<span class="stag stag-win">Laimėtojas</span>':'')+(sc.rejected?'<span class="stag stag-rej">Atmestas</span>':'')+(isLow&&!sc.rejected?'<span class="stag stag-low">Maža kaina</span>':'')+'</div>' +
+        '<div id="snum-'+s.id+'" class="sup-num">'+String.fromCharCode(64+idx+1)+'</div>' +
+        '<input id="sn-'+s.id+'" class="sup-name-input" type="text" value="'+s.name+'" placeholder="Tiekėjo pavadinimas" oninput="updSoft('+s.id+',\'name\',this.value)">' +
+        '<div id="stags-'+s.id+'" class="sup-tags">'+(isW?'<span class="stag stag-win">Laimėtojas</span>':'')+(sc.rejected?'<span class="stag stag-rej">Atmestas</span>':'')+(isLow&&!sc.rejected?'<span class="stag stag-low">Maža kaina</span>':'')+'</div>' +
         '<button class="rm-btn" onclick="removeSup('+s.id+')">×</button>' +
       '</div>' +
       '<div class="sup-body">' +
         '<div class="price-block"><div class="pb-title">I kriterijus (A) — Paslaugų kaina, EUR be PVM</div>' +
           '<div class="pb-stage-lbl"><span class="sb sb1">1 etapas × 0.30</span> Bandymo paslaugos</div>' +
-          '<input class="price-input" type="number" min="0" step="100" value="'+s.k1+'" placeholder="0,00" oninput="upd('+s.id+',\'k1\',this.value)">' +
-          '<div class="coef-note">'+(s.k1?f((parseFloat(s.k1)||0)*0.30):'—')+' EUR svertinė</div>' +
+          '<input class="price-input" type="number" min="0" step="100" value="'+s.k1+'" placeholder="0,00" oninput="updSoft('+s.id+',\'k1\',this.value)">' +
+          '<div id="coef1-'+s.id+'" class="coef-note">'+(s.k1?f((parseFloat(s.k1)||0)*0.30):'—')+' EUR svertinė</div>' +
           '<div class="pdiv"></div>' +
           '<div class="pb-stage-lbl"><span class="sb sb2">2 etapas × 0.70</span> Įrangos tiekimas</div>' +
-          '<input class="price-input" type="number" min="0" step="100" value="'+s.k2+'" placeholder="0,00" oninput="upd('+s.id+',\'k2\',this.value)">' +
-          '<div class="coef-note">'+(s.k2?f((parseFloat(s.k2)||0)*0.70):'—')+' EUR svertinė</div>' +
+          '<input class="price-input" type="number" min="0" step="100" value="'+s.k2+'" placeholder="0,00" oninput="updSoft('+s.id+',\'k2\',this.value)">' +
+          '<div id="coef2-'+s.id+'" class="coef-note">'+(s.k2?f((parseFloat(s.k2)||0)*0.70):'—')+' EUR svertinė</div>' +
           '<div class="pdiv"></div>' +
-          '<div class="wp-row"><div><div class="wp-lbl">Svertinė kaina (WP)</div></div><div class="wp-val">'+(wp?f(wp)+' EUR':'—')+'</div></div>' +
-          devTag +
-          '<div class="a-row"><span class="a-lbl">A balas</span><span class="a-val">'+f(sc.A,1)+' / '+m.A+'</span></div>' +
+          '<div class="wp-row"><div><div class="wp-lbl">Svertinė kaina (WP)</div></div><div id="wpval-'+s.id+'" class="wp-val">'+(wp?f(wp)+' EUR':'—')+'</div></div>' +
+          '<div id="devrow-'+s.id+'">'+devTag+'</div>' +
+          '<div id="aval-'+s.id+'" class="a-row"><span class="a-lbl">A balas</span><span class="a-val">'+f(sc.A,1)+' / '+m.A+'</span></div>' +
         '</div>' +
         '<div class="crit-block"><div class="cb-lbl">II kriterijus (B)</div><div class="cb-name">Pristatymo terminas</div>' +
           '<select class="crit-select" onchange="upd('+s.id+',\'delivery\',parseInt(this.value))">' +
@@ -834,10 +913,10 @@ function renderSups() {
           '<div class="score-mini"><span class="sm-lbl">B balas</span><span class="sm-val">'+sc.B+' / '+m.B+'</span></div>' +
         '</div>' +
         '<div class="crit-block"><div class="cb-lbl">III kriterijus (C)</div><div class="cb-name">Interviu su koordinatoriumi</div>' +
-          '<input class="iv-input" id="iv-'+s.id+'" type="number" min="0" max="'+m.C+'" step="0.5" value="'+s.interview+'" oninput="document.getElementById(\'ivr-'+s.id+'\').value=this.value;upd('+s.id+',\'interview\',parseFloat(this.value)||0)">' +
-          '<input type="range" id="ivr-'+s.id+'" class="iv-range" min="0" max="'+m.C+'" step="0.5" value="'+s.interview+'" oninput="document.getElementById(\'iv-'+s.id+'\').value=this.value;upd('+s.id+',\'interview\',parseFloat(this.value))">' +
-          '<div class="'+(sc.CT<8?'iv-warn':'iv-hint')+'">'+(sc.CT<8?'ATMETAMAS — mažiau nei 8 pt':'Max '+m.C+' pt (9 prist. + 8 kl.)')+'</div>' +
-          '<div class="score-mini"><span class="sm-lbl">C balas</span><span class="sm-val'+(sc.CT<8?' bad':'')+'">'+f(sc.C,1)+' / '+m.C+'</span></div>' +
+          '<input class="iv-input" id="iv-'+s.id+'" type="number" min="0" max="'+m.C+'" step="0.5" value="'+s.interview+'" oninput="document.getElementById(\'ivr-'+s.id+'\').value=this.value;updSoft('+s.id+',\'interview\',parseFloat(this.value)||0)">' +
+          '<input type="range" id="ivr-'+s.id+'" class="iv-range" min="0" max="'+m.C+'" step="0.5" value="'+s.interview+'" oninput="document.getElementById(\'iv-'+s.id+'\').value=this.value;updSoft('+s.id+',\'interview\',parseFloat(this.value))">' +
+          '<div id="ivhint-'+s.id+'" class="'+(sc.CT<8?'iv-warn':'iv-hint')+'">'+(sc.CT<8?'ATMETAMAS — mažiau nei 8 pt':'Max '+m.C+' pt (9 prist. + 8 kl.)')+'</div>' +
+          '<div id="smC-'+s.id+'" class="score-mini"><span class="sm-lbl">C balas</span><span class="sm-val'+(sc.CT<8?' bad':'')+'">'+f(sc.C,1)+' / '+m.C+'</span></div>' +
         '</div>' +
         '<div class="crit-block"><div class="cb-lbl">IV kriterijus (D)</div><div class="cb-name">MS Active Directory</div>' +
           '<div class="toggle-wrap"><button class="tbtn yes'+(s.adYes?' on':'')+'" onclick="upd('+s.id+',\'adYes\',true)">Taip '+m.D+'pt</button><button class="tbtn no'+(!s.adYes?' on':'')+'" onclick="upd('+s.id+',\'adYes\',false)">Ne 0pt</button></div>' +
@@ -848,7 +927,7 @@ function renderSups() {
           '<div class="score-mini"><span class="sm-lbl">E balas</span><span class="sm-val">'+sc.E+' / '+m.E+'</span></div>' +
         '</div>' +
       '</div>' +
-      '<div class="sup-footer"><div class="totbar">' +
+      '<div class="sup-footer"><div id="totbar-'+s.id+'" class="totbar">' +
         [['A',f(sc.A,1),m.A],['B',sc.B,m.B],['C',f(sc.C,1),m.C],['D',sc.D,m.D],['E',sc.E,m.E]].map(function(item,i){
           return(i>0?'<span class="tot-sep">+</span>':'')+'<div class="tot-item"><div class="tot-lbl">'+item[0]+'/'+item[2]+'</div><div class="tot-val">'+item[1]+'</div></div>';
         }).join('')+
