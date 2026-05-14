@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html lang="lt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Litgrid — Pasiūlymų Vertinimo Įrankis v2</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --navy:#0d1c2e;--blue:#0077b6;--blue-light:#0096c7;--blue-dim:rgba(0,119,182,0.1);
+  --white:#fff;--off:#f7f9fc;--g50:#f0f4f8;--g100:#e1e8f0;--g300:#9eb3c8;
+  --text:#0d1c2e;--tmid:#2d4a63;--tmut:#5a7394;
+  --green:#006d3b;--green-dim:rgba(0,109,59,0.08);--green-b:rgba(0,109,59,0.2);
+  --red:#b91c1c;--red-dim:rgba(185,28,28,0.08);--red-b:rgba(185,28,28,0.25);
+  --gold:#c8920a;--gold-dim:rgba(200,146,10,0.1);
+  --amber:#92600a;--amber-dim:rgba(146,96,10,0.08);--amber-b:rgba(146,96,10,0.25);
+}
+body{font-family:'IBM Plex Sans',sans-serif;background:var(--off);color:var(--text);min-height:100vh;font-size:14px;line-height:1.5}
+.header{background:var(--navy);position:sticky;top:0;z-index:100;box-shadow:0 2px 20px rgba(0,0,0,0.4)}
+.header-inner{max-width:1440px;margin:0 auto;padding:0 32px;display:flex;align-items:center;justify-content:space-between;height:60px}
+.logo-wrap{display:flex;align-items:center;gap:14px}
+.logo-text{font-size:20px;font-weight:600;color:white;letter-spacing:0.08em;font-family:'IBM Plex Mono',monospace}
+.hd{width:1px;height:26px;background:rgba(255,255,255,0.15)}
+.header-title{font-size:12px;color:rgba(255,255,255,0.6);letter-spacing:0.04em}
+.hbtns{display:flex;gap:8px;align-items:center}
+.hbadge{background:rgba(0,119,182,0.35);border:1px solid rgba(0,150,199,0.4);color:#7ecfec;font-size:10px;font-family:'IBM Plex Mono',monospace;padding:3px 10px;border-radius:3px;letter-spacing:0.08em}
+.hbtn{display:flex;align-items:center;gap:6px;background:rgba(0,119,182,0.4);border:1px solid rgba(0,150,199,0.5);color:#7ecfec;font-size:12px;font-weight:600;cursor:pointer;font-family:'IBM Plex Sans',sans-serif;padding:7px 16px;border-radius:5px;transition:all 0.15s}
+.hbtn:hover{background:rgba(0,119,182,0.65)}
+.container{max-width:1440px;margin:0 auto;padding:24px 32px 60px}
+.pirkimo-info{background:var(--white);border:1px solid var(--g100);border-radius:10px;padding:16px 22px;margin-bottom:20px;display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:16px}
+.pi-label{font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:var(--tmut);font-family:'IBM Plex Mono',monospace;margin-bottom:4px}
+.pi-input{border:1px solid var(--g100);border-radius:5px;padding:7px 11px;font-family:'IBM Plex Sans',sans-serif;font-size:13px;color:var(--text);background:var(--g50);outline:none;transition:border-color 0.15s;width:100%}
+.pi-input:focus{border-color:var(--blue);background:white}
+.criteria-bar{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-bottom:18px}
+.crit-card{background:var(--white);border:1px solid var(--g100);border-radius:8px;padding:13px 15px}
+.cc-label{font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:var(--tmut);font-family:'IBM Plex Mono',monospace}
+.cc-name{font-size:12px;font-weight:600;color:var(--text);margin:3px 0 4px}
+.cc-pts{font-size:21px;font-family:'IBM Plex Mono',monospace;font-weight:600;color:var(--blue);line-height:1}
+.cc-pts span{font-size:11px;font-weight:400;color:var(--tmut);margin-left:2px}
+.cc-note{font-size:10px;color:var(--tmut);margin-top:3px;font-family:'IBM Plex Mono',monospace}
+.cc-note.danger{color:var(--red)}
+.risk-panel{border-radius:10px;padding:14px 18px;margin-bottom:18px;border:1px solid;display:none}
+.risk-panel.visible{display:block}
+.risk-panel.ok{background:var(--green-dim);border-color:var(--green-b)}
+.risk-panel.warn{background:var(--amber-dim);border-color:var(--amber-b)}
+.risk-panel.crit{background:var(--red-dim);border-color:var(--red-b)}
+.rp-hdr{display:flex;align-items:center;gap:9px;margin-bottom:8px}
+.rp-title{font-size:13px;font-weight:700}
+.risk-panel.ok .rp-title{color:var(--green)}
+.risk-panel.warn .rp-title{color:var(--amber)}
+.risk-panel.crit .rp-title{color:var(--red)}
+.rp-items{display:flex;flex-direction:column;gap:5px}
+.rp-item{display:flex;align-items:flex-start;gap:8px;font-size:12px;line-height:1.55}
+.rp-dot{width:5px;height:5px;border-radius:50%;flex-shrink:0;margin-top:5px}
+.risk-panel.warn .rp-dot{background:var(--amber)}
+.risk-panel.crit .rp-dot{background:var(--red)}
+.section-head{display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:14px}
+.section-title{font-size:17px;font-weight:600;color:var(--navy)}
+.section-sub{font-size:12px;color:var(--tmut);margin-top:2px}
+.add-btn{display:flex;align-items:center;gap:7px;background:var(--blue);color:white;border:none;border-radius:6px;padding:9px 18px;font-size:13px;font-weight:600;cursor:pointer;font-family:'IBM Plex Sans',sans-serif;transition:background 0.15s;white-space:nowrap}
+.add-btn:hover{background:var(--blue-light)}
+.suppliers-grid{display:flex;flex-direction:column;gap:12px;margin-bottom:20px}
+.supplier-card{background:var(--white);border:1px solid var(--g100);border-radius:10px;overflow:hidden;transition:box-shadow 0.2s}
+.supplier-card:hover{box-shadow:0 4px 20px rgba(13,28,46,0.07)}
+.supplier-card.rejected{border-color:var(--red-b);background:#fffafa}
+.supplier-card.winner{border-color:var(--gold);box-shadow:0 0 0 2px rgba(200,146,10,0.12)}
+.s-head{display:flex;align-items:center;gap:12px;padding:11px 20px;background:var(--g50);border-bottom:1px solid var(--g100)}
+.s-num{width:26px;height:26px;border-radius:5px;background:var(--navy);color:white;font-family:'IBM Plex Mono',monospace;font-size:12px;font-weight:600;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.s-name-input{border:none;background:transparent;font-family:'IBM Plex Sans',sans-serif;font-size:14px;font-weight:600;color:var(--text);flex:1;outline:none;min-width:0}
+.s-name-input:focus{color:var(--blue)}
+.s-tags{display:flex;align-items:center;gap:7px;margin-left:auto;flex-shrink:0}
+.stag{font-size:10px;font-weight:700;letter-spacing:0.07em;text-transform:uppercase;font-family:'IBM Plex Mono',monospace;padding:2px 7px;border-radius:3px}
+.stag-win{background:var(--gold-dim);color:var(--gold);border:1px solid rgba(200,146,10,0.3)}
+.stag-rej{background:var(--red-dim);color:var(--red);border:1px solid var(--red-b)}
+.stag-low{background:var(--amber-dim);color:var(--amber);border:1px solid var(--amber-b)}
+.rm-btn{width:24px;height:24px;background:transparent;border:1px solid var(--g100);border-radius:4px;cursor:pointer;color:var(--tmut);display:flex;align-items:center;justify-content:center;transition:all 0.15s;flex-shrink:0;font-size:15px;font-family:monospace}
+.rm-btn:hover{background:var(--red-dim);border-color:var(--red-b);color:var(--red)}
+.s-body{padding:14px 20px;display:grid;grid-template-columns:2.2fr 1fr 1fr 1fr 1fr;gap:14px;align-items:start}
+.price-block{background:var(--g50);border:1px solid var(--g100);border-radius:8px;padding:13px}
+.pb-title{font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:var(--tmut);font-family:'IBM Plex Mono',monospace;margin-bottom:9px}
+.pb-stage-label{font-size:11px;font-weight:600;color:var(--tmid);display:flex;align-items:center;gap:6px;margin-bottom:4px}
+.sb{font-size:9px;padding:1px 5px;border-radius:3px;font-family:'IBM Plex Mono',monospace;font-weight:600}
+.sb1{background:rgba(29,53,87,0.12);color:#1d3557}
+.sb2{background:var(--green-dim);color:var(--green)}
+.price-input{width:100%;border:1px solid var(--g100);border-radius:5px;padding:7px 10px;font-family:'IBM Plex Mono',monospace;font-size:13px;color:var(--text);background:white;outline:none;transition:border-color 0.15s;text-align:right}
+.price-input:focus{border-color:var(--blue)}
+.coef-note{font-size:10px;color:var(--tmut);margin-top:2px;font-family:'IBM Plex Mono',monospace;text-align:right}
+.pdiv{height:1px;background:var(--g100);margin:9px 0}
+.wp-row{display:flex;justify-content:space-between;align-items:flex-start}
+.wp-label{font-size:10px;color:var(--tmut);font-family:'IBM Plex Mono',monospace}
+.wp-val{font-size:13px;font-weight:600;color:var(--navy);font-family:'IBM Plex Mono',monospace}
+.dev-inline{display:flex;justify-content:space-between;align-items:center;margin-top:5px;padding:4px 8px;border-radius:4px;font-size:11px;font-family:'IBM Plex Mono',monospace}
+.dev-low{background:var(--amber-dim);color:var(--amber)}
+.dev-high{background:var(--red-dim);color:var(--red)}
+.dev-norm{background:var(--green-dim);color:var(--green)}
+.a-score-row{display:flex;justify-content:space-between;align-items:center;margin-top:6px;background:var(--navy);border-radius:5px;padding:5px 9px}
+.a-label{font-size:10px;color:rgba(255,255,255,0.45);font-family:'IBM Plex Mono',monospace}
+.a-val{font-size:15px;font-weight:700;color:#7ecfec;font-family:'IBM Plex Mono',monospace}
+.crit-block{display:flex;flex-direction:column;gap:5px}
+.cb-label{font-size:10px;letter-spacing:0.09em;text-transform:uppercase;color:var(--tmut);font-family:'IBM Plex Mono',monospace}
+.cb-name{font-size:11px;font-weight:600;color:var(--tmid);margin-bottom:3px}
+.crit-select{width:100%;border:1px solid var(--g100);border-radius:5px;padding:7px 10px;font-family:'IBM Plex Sans',sans-serif;font-size:12px;color:var(--text);background:white;outline:none;cursor:pointer}
+.crit-select:focus{border-color:var(--blue)}
+.toggle-wrap{display:flex;gap:5px}
+.tbtn{flex:1;padding:7px 4px;border:1px solid var(--g100);border-radius:5px;font-size:11px;font-weight:600;cursor:pointer;font-family:'IBM Plex Sans',sans-serif;transition:all 0.15s;background:white;color:var(--tmut)}
+.tbtn.yes.on{background:var(--green-dim);border-color:var(--green-b);color:var(--green)}
+.tbtn.no.on{background:var(--red-dim);border-color:var(--red-b);color:var(--red)}
+.iv-input{width:100%;border:1px solid var(--g100);border-radius:5px;padding:7px 10px;font-family:'IBM Plex Mono',monospace;font-size:13px;color:var(--text);background:white;outline:none;text-align:center}
+.iv-input:focus{border-color:var(--blue)}
+.iv-range{width:100%;accent-color:var(--blue);cursor:pointer;margin:4px 0}
+.iv-hint{font-size:10px;color:var(--tmut);font-family:'IBM Plex Mono',monospace;text-align:center}
+.iv-warn{font-size:10px;color:var(--red);font-weight:600;font-family:'IBM Plex Mono',monospace;text-align:center}
+.score-mini{display:flex;justify-content:space-between;align-items:center;background:var(--navy);border-radius:5px;padding:6px 9px;margin-top:5px}
+.sm-label{font-size:10px;color:rgba(255,255,255,0.4);font-family:'IBM Plex Mono',monospace}
+.sm-val{font-size:13px;font-weight:600;color:white;font-family:'IBM Plex Mono',monospace}
+.sm-val.bad{color:#f87171}
+.s-footer{padding:0 20px 14px}
+.s-totbar{background:var(--navy);border-radius:8px;padding:13px 18px;display:flex;gap:18px;align-items:center;flex-wrap:wrap}
+.st-item{text-align:center}
+.st-lbl{font-size:9px;color:rgba(255,255,255,0.4);font-family:'IBM Plex Mono',monospace;letter-spacing:0.08em;margin-bottom:2px}
+.st-val{font-size:18px;font-family:'IBM Plex Mono',monospace;font-weight:700;color:white;line-height:1}
+.st-sep{color:rgba(255,255,255,0.18);font-size:18px;font-family:'IBM Plex Mono',monospace}
+.st-total{font-size:22px;font-family:'IBM Plex Mono',monospace;font-weight:700;line-height:1}
+.st-total.ok{color:#7ecfec}
+.st-total.bad{color:#f87171}
+.s-price-info{margin-left:auto;background:rgba(255,255,255,0.05);border-radius:6px;padding:9px 13px;font-size:11px;color:rgba(255,255,255,0.55);font-family:'IBM Plex Mono',monospace;line-height:1.8;flex-shrink:0}
+.s-price-info b{color:rgba(255,255,255,0.85)}
+.results-wrap{background:var(--white);border:1px solid var(--g100);border-radius:10px;overflow:hidden;margin-bottom:20px}
+.rhead{padding:14px 22px;background:var(--navy);display:flex;align-items:center;justify-content:space-between}
+.rhead-title{font-size:14px;color:white;font-weight:600}
+.rhead-note{font-size:11px;color:rgba(255,255,255,0.45);font-family:'IBM Plex Mono',monospace}
+.rtable{width:100%;border-collapse:collapse}
+.rtable th{background:var(--g50);padding:9px 13px;text-align:right;font-size:10px;letter-spacing:0.09em;text-transform:uppercase;color:var(--tmut);font-family:'IBM Plex Mono',monospace;font-weight:500;border-bottom:1px solid var(--g100);white-space:nowrap}
+.rtable th:first-child,.rtable th:nth-child(2),.rtable th:last-child{text-align:left}
+.rtable td{padding:11px 13px;border-bottom:1px solid var(--g100);font-size:13px;vertical-align:middle;text-align:right;white-space:nowrap}
+.rtable td:first-child,.rtable td:nth-child(2),.rtable td:last-child{text-align:left}
+.rtable tr:last-child td{border-bottom:none}
+.rtable tr.win-row{background:#fffbeb}
+.rtable tr.rej-row{background:#fef2f2;opacity:0.75}
+.rtable tr.win-row td:first-child{border-left:3px solid var(--gold)}
+.rtable tr.rej-row td:first-child{border-left:3px solid var(--red)}
+.rbadge{width:25px;height:25px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;font-family:'IBM Plex Mono',monospace}
+.rb1{background:var(--gold);color:white}
+.rb2{background:var(--g300);color:white}
+.rb3{background:#c07a3e;color:white}
+.rbn{background:var(--g100);color:var(--tmut)}
+.rbrej{background:var(--red-dim);color:var(--red);font-size:9px}
+.sc{font-family:'IBM Plex Mono',monospace;font-weight:600}
+.sc.bad{color:var(--red)}
+.sc.total{font-size:15px;color:var(--navy);font-weight:700}
+.bar-wrap{display:flex;align-items:center;gap:7px}
+.bar{height:7px;border-radius:4px;background:var(--blue-dim);flex:1;overflow:hidden;min-width:50px}
+.bar-fill{height:100%;border-radius:4px;background:var(--blue)}
+.bar-fill.gld{background:var(--gold)}
+.dtag{font-size:10px;font-family:'IBM Plex Mono',monospace;padding:2px 6px;border-radius:3px;font-weight:600}
+.dtag-low{background:var(--amber-dim);color:var(--amber)}
+.dtag-high{background:var(--red-dim);color:var(--red)}
+.dtag-norm{background:var(--green-dim);color:var(--green)}
+.formula-box{background:var(--navy);border-radius:10px;padding:18px 24px;display:flex;align-items:center;gap:22px;flex-wrap:wrap}
+.fb-title{font-size:10px;letter-spacing:0.12em;text-transform:uppercase;font-family:'IBM Plex Mono',monospace;color:rgba(255,255,255,0.35);margin-bottom:5px}
+.fb-eq{font-family:'IBM Plex Mono',monospace;font-size:13px;color:white;line-height:1.6}
+.fb-eq .hi{color:#7ecfec}
+.fb-sep{width:1px;height:38px;background:rgba(255,255,255,0.1);flex-shrink:0}
+.fb-note{font-size:11px;color:rgba(255,255,255,0.45);font-family:'IBM Plex Mono',monospace;line-height:1.75}
+.fb-note b{color:rgba(255,255,255,0.8)}
+
+/* MODAL */
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.65);z-index:1000;align-items:center;justify-content:center}
+.modal-overlay.open{display:flex}
+.modal{background:white;border-radius:12px;width:880px;max-width:95vw;max-height:92vh;overflow:hidden;display:flex;flex-direction:column;box-shadow:0 20px 60px rgba(0,0,0,0.4)}
+.modal-header{padding:14px 24px;background:var(--navy);display:flex;align-items:center;justify-content:space-between;flex-shrink:0}
+.modal-header-title{color:white;font-size:14px;font-weight:600}
+.mbtns{display:flex;gap:8px}
+.mbtn{padding:7px 16px;border-radius:5px;font-size:12px;font-weight:600;cursor:pointer;font-family:'IBM Plex Sans',sans-serif;border:none;transition:all 0.15s}
+.mbtn-print{background:#7ecfec;color:var(--navy)}
+.mbtn-print:hover{background:#a8dff5}
+.mbtn-close{background:rgba(255,255,255,0.1);color:white;border:1px solid rgba(255,255,255,0.2)}
+.mbtn-close:hover{background:rgba(255,255,255,0.2)}
+.modal-body{overflow-y:auto;flex:1}
+
+/* PROTOCOL PRINT STYLES */
+.protocol{padding:36px 40px;font-family:'IBM Plex Sans',sans-serif;color:#111;font-size:13px;line-height:1.6}
+.proto-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:22px;padding-bottom:18px;border-bottom:2px solid #0d1c2e}
+.proto-org{font-size:18px;font-weight:700;color:#0d1c2e;letter-spacing:0.06em;font-family:'IBM Plex Mono',monospace}
+.proto-doc{text-align:right;font-size:11px;color:#444;font-family:'IBM Plex Mono',monospace;line-height:2}
+.proto-title{text-align:center;margin-bottom:20px}
+.proto-title h2{font-size:14px;font-weight:700;color:#0d1c2e;text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px}
+.proto-title p{font-size:12px;color:#555}
+.proto-meta{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:18px;background:#f7f9fc;border-radius:6px;padding:13px 16px}
+.pm-lbl{font-size:10px;text-transform:uppercase;letter-spacing:0.08em;color:#666;font-family:'IBM Plex Mono',monospace;margin-bottom:2px}
+.pm-val{font-size:13px;font-weight:600;color:#0d1c2e}
+.proto-section{margin-bottom:18px}
+.proto-section h3{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.09em;color:#0d1c2e;border-bottom:1px solid #e1e8f0;padding-bottom:5px;margin-bottom:10px}
+.ptable{width:100%;border-collapse:collapse;font-size:12px}
+.ptable th{background:#0d1c2e;color:white;padding:7px 9px;text-align:right;font-size:10px;letter-spacing:0.07em;text-transform:uppercase;font-family:'IBM Plex Mono',monospace;white-space:nowrap}
+.ptable th:first-child,.ptable th:nth-child(2){text-align:left}
+.ptable td{padding:8px 9px;border-bottom:1px solid #e1e8f0;text-align:right;font-family:'IBM Plex Mono',monospace;white-space:nowrap}
+.ptable td:first-child,.ptable td:nth-child(2){text-align:left;font-family:'IBM Plex Sans',sans-serif}
+.ptable tr.pw{background:#fffbeb}
+.ptable tr.pr{background:#fef2f2;opacity:0.8}
+.ptable tr.pw td:first-child{border-left:3px solid #c8920a}
+.ptable tr.pr td:first-child{border-left:3px solid #b91c1c}
+.proto-risk{background:#fffbeb;border:1px solid #e6c547;border-radius:5px;padding:10px 14px;margin-bottom:14px;font-size:12px;color:#7a5900}
+.proto-risk-title{font-weight:700;margin-bottom:5px}
+.sign-grid{margin-top:28px;display:grid;grid-template-columns:1fr 1fr 1fr;gap:20px}
+.sign-item{border-top:1px solid #666;padding-top:7px;font-size:11px;color:#444}
+.sign-role{font-weight:700;color:#0d1c2e;margin-bottom:2px}
+.sign-line{height:30px}
+.proto-footer{margin-top:20px;padding-top:12px;border-top:1px solid #e1e8f0;font-size:10px;color:#888;display:flex;justify-content:space-between}
+@media print{
+  body{background:white}
+  .modal-overlay{display:block!important;position:static;background:none}
+  .modal{box-shadow:none;border-radius:0;max-height:none;width:100%}
+  .modal-header{display:none}
+  .protocol{padding:18px}
+}
+</style>
+</head>
+<body>
+
+<!-- MODAL -->
+<div class="modal-overlay" id="modalOverlay" onclick="if(event.target===this)closeModal()">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-header-title">Vertinimo protokolas — peržiūra prieš spausdinimą</div>
+      <div class="mbtns">
+        <button class="mbtn mbtn-print" onclick="window.print()">Spausdinti / PDF</button>
+        <button class="mbtn mbtn-close" onclick="closeModal()">Uždaryti</button>
+      </div>
+    </div>
+    <div class="modal-body"><div class="protocol" id="protocolContent"></div></div>
+  </div>
+</div>
+
+<header class="header">
+  <div class="header-inner">
+    <div class="logo-wrap">
+      <div class="logo-text">Litgrid</div>
+      <div class="hd"></div>
+      <div class="header-title">Pasiūlymų vertinimo įrankis</div>
+    </div>
+    <div class="hbtns">
+      <div class="hbadge">DAS-TPI v2</div>
+      <button class="hbtn" onclick="openProtocol()">
+        <svg width="13" height="13" viewBox="0 0 13 13" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="1" width="9" height="11" rx="1"/><line x1="4" y1="4" x2="9" y2="4"/><line x1="4" y1="7" x2="9" y2="7"/><line x1="4" y1="10" x2="7" y2="10"/></svg>
+        Generuoti protokolą
+      </button>
+    </div>
+  </div>
+</header>
+
+<div class="container">
+
+  <div class="pirkimo-info">
+    <div><div class="pi-label">Pirkimo pavadinimas</div><input class="pi-input" id="piName" type="text" value="DAS-TPI sistemos paslaugos" placeholder="Pirkimo pavadinimas"></div>
+    <div><div class="pi-label">Pirkimo Nr.</div><input class="pi-input" id="piNr" type="text" placeholder="pvz. PK-2025-001"></div>
+    <div><div class="pi-label">Komisijos posėdžio data</div><input class="pi-input" id="piDate" type="date"></div>
+    <div><div class="pi-label">Numatoma vertė, EUR be PVM</div><input class="pi-input" id="piValue" type="number" placeholder="Numatoma vertė"></div>
+  </div>
+
+  <div class="criteria-bar">
+    <div class="crit-card"><div class="cc-label">I kriterijus (A)</div><div class="cc-name">Paslaugų kaina</div><div class="cc-pts">63 <span>balai</span></div><div class="cc-note">A = 63 × (WPmin / WPp)</div></div>
+    <div class="crit-card"><div class="cc-label">II kriterijus (B)</div><div class="cc-name">Pristatymo terminas</div><div class="cc-pts">10 <span>balų</span></div><div class="cc-note">≤3 mėn=10 / 4mėn=5 / 5mėn=0</div></div>
+    <div class="crit-card"><div class="cc-label">III kriterijus (C)</div><div class="cc-name">Interviu</div><div class="cc-pts">17 <span>balų</span></div><div class="cc-note danger">Min. ≥ 8 pt · kitaip ATMESTAS</div></div>
+    <div class="crit-card"><div class="cc-label">IV kriterijus (D)</div><div class="cc-name">MS Active Directory</div><div class="cc-pts">5 <span>balai</span></div><div class="cc-note">Taip = 5 / Ne = 0</div></div>
+    <div class="crit-card"><div class="cc-label">V kriterijus (E)</div><div class="cc-name">Meteostotis</div><div class="cc-pts">5 <span>balai</span></div><div class="cc-note">Taip = 5 / Ne = 0</div></div>
+  </div>
+
+  <div class="risk-panel" id="riskPanel">
+    <div class="rp-hdr"><span id="riskIcon" style="font-size:15px"></span><span class="rp-title" id="riskTitle"></span></div>
+    <div class="rp-items" id="riskItems"></div>
+  </div>
+
+  <div class="section-head">
+    <div><div class="section-title">Tiekėjų pasiūlymai</div><div class="section-sub">Įveskite duomenis — rizikos įspėjimai ir kainos analizė atnaujinama automatiškai</div></div>
+    <button class="add-btn" onclick="addSupplier()"><svg width="13" height="13" viewBox="0 0 13 13" stroke="currentColor" stroke-width="2.5" fill="none"><line x1="6.5" y1="1.5" x2="6.5" y2="11.5"/><line x1="1.5" y1="6.5" x2="11.5" y2="6.5"/></svg>Pridėti tiekėją</button>
+  </div>
+  <div class="suppliers-grid" id="suppliersGrid"></div>
+
+  <div class="section-head" style="margin-top:4px">
+    <div><div class="section-title">Vertinimo rezultatai</div><div class="section-sub">Eilė pagal EN · kainos nukrypimas nuo vidurkio žymi kainos pagrįstumo vertinimo poreikį</div></div>
+  </div>
+  <div class="results-wrap">
+    <div class="rhead"><div class="rhead-title">Pasiūlymų eilė</div><div class="rhead-note" id="resultsNote">Pridėkite pasiūlymus</div></div>
+    <div style="overflow-x:auto">
+      <table class="rtable">
+        <thead>
+          <tr>
+            <th style="text-align:left;width:44px">Eilė</th>
+            <th style="text-align:left;min-width:130px">Tiekėjas</th>
+            <th>1 etapas EUR</th><th>2 etapas EUR</th><th>WP svertinė</th>
+            <th>A /63</th><th>B /10</th><th>C /17</th><th>D /5</th><th>E /5</th>
+            <th style="min-width:110px">EN /100</th>
+            <th style="text-align:left;min-width:130px">Kaina vs. vidurkis</th>
+          </tr>
+        </thead>
+        <tbody id="resultsBody">
+          <tr><td colspan="12" style="text-align:center;padding:28px;color:var(--tmut);font-style:italic">Pridėkite bent vieną tiekėją</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="formula-box">
+    <div><div class="fb-title">Vertinimo formulė</div><div class="fb-eq">EN = <span class="hi">A</span> + <span class="hi">B</span> + <span class="hi">C</span> + <span class="hi">D</span> + <span class="hi">E</span></div></div>
+    <div class="fb-sep"></div>
+    <div><div class="fb-title">Kainos kriterijus — dviejų etapų svertinė formulė</div><div class="fb-eq">WP = (K₁ × <span class="hi">0.30</span>) + (K₂ × <span class="hi">0.70</span>) &nbsp;|&nbsp; A = 63 × (WP<span class="hi">min</span> / WP<span class="hi">p</span>)</div></div>
+    <div class="fb-sep"></div>
+    <div class="fb-note"><b>K₁</b> = Bandymo paslaugos (1 etapas)<br><b>K₂</b> = Įrangos tiekimas (2 etapas)<br><b>Atmetimas:</b> interviu &lt; 8 pt</div>
+  </div>
+</div>
+
+<script>
+var suppliers=[], nextId=1, LOW=-25, HIGH=30;
+document.getElementById('piDate').value=new Date().toISOString().slice(0,10);
+
+function f(n,d){d=d===undefined?2:d;if(isNaN(n)||n===null)return '—';return n.toLocaleString('lt-LT',{minimumFractionDigits:d,maximumFractionDigits:d});}
+function fe(n){return(!n||isNaN(n))?'—':f(n)+' EUR';}
+function calcB(d){return d<=3?10:d===4?5:0;}
+function calcWP(k1,k2){return(parseFloat(k1)||0)*0.30+(parseFloat(k2)||0)*0.70;}
+function calcA(wp,wpMin){return(!wp||!wpMin)?0:63*(wpMin/wp);}
+function getWpMin(){var w=suppliers.map(function(s){var k1=parseFloat(s.k1)||0,k2=parseFloat(s.k2)||0;return(!k1&&!k2)?Infinity:calcWP(k1,k2);}).filter(function(v){return v>0&&v!==Infinity;});return w.length?Math.min.apply(null,w):1;}
+function getWpAvg(){var w=suppliers.map(function(s){var k1=parseFloat(s.k1)||0,k2=parseFloat(s.k2)||0;return(!k1&&!k2)?null:calcWP(k1,k2);}).filter(function(v){return v!==null&&v>0;});return w.length?w.reduce(function(a,b){return a+b;},0)/w.length:0;}
+function getScores(s,wpMin){var k1=parseFloat(s.k1)||0,k2=parseFloat(s.k2)||0,wp=calcWP(k1,k2);var A=(k1>0||k2>0)?calcA(wp,wpMin):0,B=calcB(s.delivery),CT=parseFloat(s.interview)||0,C=CT,D=s.adYes?5:0,E=s.meteoYes?5:0;return{k1:k1,k2:k2,wp:wp,A:A,B:B,C:C,D:D,E:E,EN:A+B+C+D+E,CT:CT,rejected:CT<8};}
+function getDev(wp,avg){return(!wp||!avg)?null:Math.round((wp-avg)/avg*100);}
+function addSupplier(){suppliers.push({id:nextId++,name:'Tiekėjas '+String.fromCharCode(64+suppliers.length+1),k1:'',k2:'',delivery:3,interview:8,adYes:false,meteoYes:false});renderAll();}
+function removeSup(id){suppliers=suppliers.filter(function(s){return s.id!==id;});renderAll();}
+function upd(id,field,val){var s=suppliers.find(function(x){return x.id===id;});if(s){s[field]=val;renderAll();}}
+function renderAll(){renderSups();renderResults();renderRisks();}
+
+function renderRisks(){
+  var panel=document.getElementById('riskPanel');
+  if(!suppliers.length){panel.className='risk-panel';return;}
+  var wpMin=getWpMin(),avgWP=getWpAvg();
+  var sc=suppliers.map(function(s){return{s:s,sc:getScores(s,wpMin)};});
+  var valid=sc.filter(function(x){return!x.sc.rejected;});
+  var rej=sc.filter(function(x){return x.sc.rejected;});
+  var warns=[],isCrit=false;
+  if(valid.length===0){isCrit=true;warns.push('Visi tiekėjai atmesti — sutartis negali būti sudaryta. Rekomenduojama kartoti procedūrą.');}
+  else if(valid.length===1){isCrit=true;warns.push('Gautas tik 1 tinkamas pasiūlymas — faktiškai neskelbiamų derybų situacija. Rekomenduojama pagrįsti nekonkurenciją.');}
+  if(valid.length>=2){
+    var vs=valid.slice().sort(function(a,b){return b.sc.EN-a.sc.EN;});
+    if(Math.abs(vs[0].sc.EN-vs[1].sc.EN)<0.5) warns.push('Lyginiai balai: '+vs[0].s.name+' ('+f(vs[0].sc.EN,2)+') ir '+vs[1].s.name+' ('+f(vs[1].sc.EN,2)+') — skirtumas < 0,5 balo. Patikrinkite skaičiavimus.');
+  }
+  if(avgWP>0) sc.forEach(function(item){var d=getDev(item.sc.wp,avgWP);if(d!==null&&d<LOW) warns.push(item.s.name+': WP '+f(item.sc.wp)+' EUR yra '+Math.abs(d)+'% žemiau vidurkio — rekomenduojama kainos pagrįstumo vertinimas.');});
+  if(rej.length>0&&valid.length>0) warns.push(rej.length+' tiekėjas (-ai) atmesti dėl interviu balo < 8 pt: '+rej.map(function(x){return x.s.name;}).join(', ')+'.');
+
+  if(warns.length===0){
+    panel.className='risk-panel visible ok';
+    document.getElementById('riskIcon').textContent='✓';
+    document.getElementById('riskTitle').textContent='Procedūra be nustatytų rizikų — '+valid.length+' tinkamų pasiūlymų';
+    document.getElementById('riskItems').innerHTML='';
+  } else {
+    panel.className='risk-panel visible '+(isCrit?'crit':'warn');
+    document.getElementById('riskIcon').textContent='⚠';
+    document.getElementById('riskTitle').textContent=(isCrit?'Kritinė rizika — reikalingas sprendimas':'Atkreiptinas dėmesys (')+warns.length+(warns.length===1?' įspėjimas':' įspėjimai')+')';
+    document.getElementById('riskItems').innerHTML=warns.map(function(w){return '<div class="rp-item"><div class="rp-dot"></div><div>'+w+'</div></div>';}).join('');
+  }
+}
+
+function renderSups(){
+  var grid=document.getElementById('suppliersGrid');
+  if(!suppliers.length){grid.innerHTML='<div style="text-align:center;padding:40px;color:var(--tmut)">Dar nėra tiekėjų. Paspauskite „Pridėti tiekėją".</div>';return;}
+  var wpMin=getWpMin(),avgWP=getWpAvg();
+  var vs=suppliers.map(function(s,i){return{s:s,i:i,sc:getScores(s,wpMin)};}).filter(function(x){return!x.sc.rejected;}).sort(function(a,b){return b.sc.EN-a.sc.EN;});
+  grid.innerHTML=suppliers.map(function(s,idx){
+    var sc=getScores(s,wpMin),wp=calcWP(parseFloat(s.k1)||0,parseFloat(s.k2)||0);
+    var isW=!sc.rejected&&vs.length>0&&vs[0].s.id===s.id;
+    var dev=getDev(wp,avgWP),isLow=dev!==null&&dev<LOW;
+    var devTag='';
+    if(dev!==null&&wp>0){var cls=dev<LOW?'dev-inline dev-low':dev>HIGH?'dev-inline dev-high':'dev-inline dev-norm';var sym=dev>0?'+':'';devTag='<div class="'+cls+'"><span>Nukrypimas nuo vidurkio</span><span>'+sym+dev+'%</span></div>';}
+    return '<div class="supplier-card'+(sc.rejected?' rejected':'')+(isW?' winner':'')+'">' +
+      '<div class="s-head"><div class="s-num">'+String.fromCharCode(64+idx+1)+'</div>' +
+      '<input class="s-name-input" type="text" value="'+s.name+'" oninput="upd('+s.id+',\'name\',this.value)">' +
+      '<div class="s-tags">'+(isW&&!sc.rejected?'<span class="stag stag-win">Laimėtojas</span>':'')+(sc.rejected?'<span class="stag stag-rej">Atmestas</span>':'')+(isLow&&!sc.rejected?'<span class="stag stag-low">Maža kaina</span>':'')+'</div>' +
+      '<button class="rm-btn" onclick="removeSup('+s.id+')">×</button></div>' +
+      '<div class="s-body">' +
+        '<div class="price-block"><div class="pb-title">I kriterijus (A) — Paslaugų kaina, EUR be PVM</div>' +
+        '<div class="pb-stage-label"><span class="sb sb1">1 etapas × 0.30</span> Bandymo paslaugos</div>' +
+        '<input class="price-input" type="number" min="0" step="100" value="'+s.k1+'" placeholder="0,00" oninput="upd('+s.id+',\'k1\',this.value)">' +
+        '<div class="coef-note">'+(s.k1?f((parseFloat(s.k1)||0)*0.30):'—')+' EUR svertinė</div><div class="pdiv"></div>' +
+        '<div class="pb-stage-label"><span class="sb sb2">2 etapas × 0.70</span> Įrangos tiekimas</div>' +
+        '<input class="price-input" type="number" min="0" step="100" value="'+s.k2+'" placeholder="0,00" oninput="upd('+s.id+',\'k2\',this.value)">' +
+        '<div class="coef-note">'+(s.k2?f((parseFloat(s.k2)||0)*0.70):'—')+' EUR svertinė</div><div class="pdiv"></div>' +
+        '<div class="wp-row"><div><div class="wp-label">Svertinė kaina (WP)</div></div><div class="wp-val">'+(wp?f(wp)+' EUR':'—')+'</div></div>' +
+        devTag+
+        '<div class="a-score-row"><span class="a-label">A balas</span><span class="a-val">'+f(sc.A,1)+' / 63</span></div></div>' +
+        '<div class="crit-block"><div class="cb-label">II kriterijus (B)</div><div class="cb-name">Pristatymo terminas</div>' +
+        '<select class="crit-select" onchange="upd('+s.id+',\'delivery\',parseInt(this.value))">' +
+        '<option value="3"'+(s.delivery<=3?' selected':'')+'>≤ 3 mėn. — 10 pt</option>' +
+        '<option value="4"'+(s.delivery===4?' selected':'')+'>4 mėn. — 5 pt</option>' +
+        '<option value="5"'+(s.delivery>=5?' selected':'')+'>5 mėn. — 0 pt</option></select>' +
+        '<div class="score-mini"><span class="sm-label">B balas</span><span class="sm-val">'+sc.B+' / 10</span></div></div>' +
+        '<div class="crit-block"><div class="cb-label">III kriterijus (C)</div><div class="cb-name">Interviu su koordinatoriumi</div>' +
+        '<input class="iv-input" id="iv-'+s.id+'" type="number" min="0" max="17" step="0.5" value="'+s.interview+'" oninput="document.getElementById(\'ivr-'+s.id+'\').value=this.value;upd('+s.id+',\'interview\',parseFloat(this.value)||0)">' +
+        '<input type="range" id="ivr-'+s.id+'" class="iv-range" min="0" max="17" step="0.5" value="'+s.interview+'" oninput="document.getElementById(\'iv-'+s.id+'\').value=this.value;upd('+s.id+',\'interview\',parseFloat(this.value))">' +
+        '<div class="'+(sc.CT<8?'iv-warn':'iv-hint')+'">'+(sc.CT<8?'ATMETAMAS — mažiau nei 8 pt':'Max 17 pt (9 prist. + 8 kl.)')+'</div>' +
+        '<div class="score-mini"><span class="sm-label">C balas</span><span class="sm-val'+(sc.CT<8?' bad':'')+'">'+f(sc.C,1)+' / 17</span></div></div>' +
+        '<div class="crit-block"><div class="cb-label">IV kriterijus (D)</div><div class="cb-name">MS Active Directory</div>' +
+        '<div class="toggle-wrap"><button class="tbtn yes'+(s.adYes?' on':'')+'" onclick="upd('+s.id+',\'adYes\',true)">Taip — 5</button><button class="tbtn no'+(!s.adYes?' on':'')+'" onclick="upd('+s.id+',\'adYes\',false)">Ne — 0</button></div>' +
+        '<div class="score-mini"><span class="sm-label">D balas</span><span class="sm-val">'+sc.D+' / 5</span></div></div>' +
+        '<div class="crit-block"><div class="cb-label">V kriterijus (E)</div><div class="cb-name">Meteostotis</div>' +
+        '<div class="toggle-wrap"><button class="tbtn yes'+(s.meteoYes?' on':'')+'" onclick="upd('+s.id+',\'meteoYes\',true)">Taip — 5</button><button class="tbtn no'+(!s.meteoYes?' on':'')+'" onclick="upd('+s.id+',\'meteoYes\',false)">Ne — 0</button></div>' +
+        '<div class="score-mini"><span class="sm-label">E balas</span><span class="sm-val">'+sc.E+' / 5</span></div></div>' +
+      '</div>' +
+      '<div class="s-footer"><div class="s-totbar">' +
+        [['A',f(sc.A,1),'63'],['B',sc.B,'10'],['C',f(sc.C,1),'17'],['D',sc.D,'5'],['E',sc.E,'5']].map(function(item,i){
+          return(i>0?'<span class="st-sep">+</span>':'')+'<div class="st-item"><div class="st-lbl">'+item[0]+'/'+item[2]+'</div><div class="st-val">'+item[1]+'</div></div>';
+        }).join('')+
+        '<span class="st-sep">=</span><div class="st-item"><div class="st-lbl">EN/100</div><div class="st-total '+(sc.rejected?'bad':'ok')+'">'+(sc.rejected?'ATMESTAS':f(sc.EN,2))+'</div></div>' +
+        '<div class="s-price-info">1 et.: <b>'+fe(sc.k1)+'</b><br>2 et.: <b>'+fe(sc.k2)+'</b><br>Bendra: <b>'+fe(sc.k1+sc.k2)+'</b></div>' +
+      '</div></div></div>';
+  }).join('');
+}
+
+function renderResults(){
+  var tbody=document.getElementById('resultsBody'),note=document.getElementById('resultsNote');
+  if(!suppliers.length){tbody.innerHTML='<tr><td colspan="12" style="text-align:center;padding:28px;color:var(--tmut);font-style:italic">Pridėkite bent vieną tiekėją</td></tr>';note.textContent='Pridėkite pasiūlymus';return;}
+  var wpMin=getWpMin(),avgWP=getWpAvg();
+  var sc=suppliers.map(function(s,i){return{s:s,i:i,sc:getScores(s,wpMin)};});
+  var valid=sc.filter(function(x){return!x.sc.rejected;}).sort(function(a,b){return b.sc.EN-a.sc.EN;});
+  var rej=sc.filter(function(x){return x.sc.rejected;});
+  var sorted=valid.concat(rej),maxEN=valid.length?valid[0].sc.EN:0;
+  tbody.innerHTML=sorted.map(function(item,rank){
+    var sc=item.sc,s=item.s,isFirst=!sc.rejected&&rank===0&&valid.length>0;
+    var rn=sc.rejected?null:rank+1;
+    var rb=sc.rejected?'<span class="rbadge rbrej">ATM</span>':rn===1?'<span class="rbadge rb1">1</span>':rn===2?'<span class="rbadge rb2">2</span>':rn===3?'<span class="rbadge rb3">3</span>':'<span class="rbadge rbn">'+rn+'</span>';
+    var pct=maxEN?Math.round(sc.EN/maxEN*100):0;
+    var dev=getDev(sc.wp,avgWP),devHtml='<span style="color:var(--tmut);font-size:11px">—</span>';
+    if(dev!==null&&sc.wp>0){var cls=dev<LOW?'dtag dtag-low':dev>HIGH?'dtag dtag-high':'dtag dtag-norm';var sym=dev>0?'+':'';devHtml='<span class="'+cls+'">'+sym+dev+'%</span>'+(dev<LOW?' <span style="font-size:10px;color:var(--amber)">Vertinti</span>':'');}
+    return '<tr class="'+(isFirst?'win-row':'')+(sc.rejected?' rej-row':'')+'">' +
+      '<td>'+rb+'</td><td><b>'+s.name+'</b></td>' +
+      '<td class="sc">'+fe(sc.k1)+'</td><td class="sc">'+fe(sc.k2)+'</td>' +
+      '<td class="sc">'+(sc.wp?f(sc.wp)+' EUR':'—')+'</td>' +
+      '<td class="sc" style="color:var(--navy)">'+f(sc.A,1)+'</td><td class="sc">'+sc.B+'</td>' +
+      '<td class="sc'+(sc.CT<8?' bad':'')+'">'+f(sc.C,1)+'</td>' +
+      '<td class="sc">'+sc.D+'</td><td class="sc">'+sc.E+'</td>' +
+      '<td>'+(sc.rejected?'<span style="color:var(--red);font-weight:700;font-family:\'IBM Plex Mono\',monospace">ATMESTAS</span>':'<div class="bar-wrap"><div class="bar"><div class="bar-fill'+(isFirst?' gld':'')+'" style="width:'+pct+'%"></div></div><span class="sc total">'+f(sc.EN,2)+'</span></div>')+'</td>' +
+      '<td>'+devHtml+'</td></tr>';
+  }).join('');
+  note.textContent=valid.length+' tinkamų · '+rej.length+' atmesta · Viso '+suppliers.length+' pasiūlymų';
+}
+
+function openProtocol(){
+  if(!suppliers.length){alert('Pridėkite bent vieną tiekėją prieš generuojant protokolą.');return;}
+  var wpMin=getWpMin(),avgWP=getWpAvg();
+  var sc=suppliers.map(function(s){return{s:s,sc:getScores(s,wpMin)};});
+  var valid=sc.filter(function(x){return!x.sc.rejected;}).sort(function(a,b){return b.sc.EN-a.sc.EN;});
+  var rej=sc.filter(function(x){return x.sc.rejected;});
+  var sorted=valid.concat(rej),winner=valid.length?valid[0]:null;
+  var piName=document.getElementById('piName').value||'—',piNr=document.getElementById('piNr').value||'—';
+  var piDate=document.getElementById('piDate').value,piValue=document.getElementById('piValue').value;
+  var dateStr=piDate?new Date(piDate).toLocaleDateString('lt-LT'):'—';
+
+  var risks=[];
+  if(valid.length===0) risks.push('Visi tiekėjai atmesti — sutartis negali būti sudaryta.');
+  else if(valid.length===1) risks.push('Gautas tik vienas tinkamas pasiūlymas. Rekomenduojama pagrįsti pirkimo sąlygų proporcingumą.');
+  if(valid.length>=2){var s1=valid[0],s2=valid[1];if(Math.abs(s1.sc.EN-s2.sc.EN)<0.5) risks.push('1 ir 2 eilės balai skiriasi mažiau nei 0,5 balo — patikrinkite skaičiavimus.');}
+  sc.forEach(function(item){var d=getDev(item.sc.wp,avgWP);if(d!==null&&d<LOW) risks.push(item.s.name+': kaina '+Math.abs(d)+'% žemiau vidurkio — rekomenduojama kainos pagrįstumo patikra.');});
+
+  var riskHtml=risks.length?'<div class="proto-risk"><div class="proto-risk-title">Atkreiptinas komisijos dėmesys</div>'+risks.map(function(r){return '<div style="margin-top:3px">• '+r+'</div>';}).join('')+'</div>':'';
+  var trows=sorted.map(function(item,rank){
+    var sc=item.sc,s=item.s,isF=!sc.rejected&&rank===0&&valid.length>0;
+    var dev=getDev(sc.wp,avgWP),ds=dev!==null&&sc.wp>0?(dev>0?'+':'')+dev+'%':'—';
+    return '<tr class="'+(isF?'pw':'')+(sc.rejected?' pr':'')+'">' +
+      '<td>'+(sc.rejected?'Atm.':rank+1)+'</td><td>'+s.name+'</td>' +
+      '<td>'+fe(sc.k1)+'</td><td>'+fe(sc.k2)+'</td><td>'+(sc.wp?f(sc.wp)+' EUR':'—')+'</td>' +
+      '<td>'+f(sc.A,1)+'</td><td>'+sc.B+'</td>' +
+      '<td style="'+(sc.CT<8?'color:#b91c1c;font-weight:700':'')+'">'+f(sc.C,1)+'</td>' +
+      '<td>'+sc.D+'</td><td>'+sc.E+'</td>' +
+      '<td style="font-weight:700;'+(sc.rejected?'color:#b91c1c':'color:#0d1c2e')+'">'+(sc.rejected?'ATMESTAS':f(sc.EN,2))+'</td>' +
+      '<td>'+ds+'</td></tr>';
+  }).join('');
+
+  document.getElementById('protocolContent').innerHTML=
+    '<div class="proto-header"><div><div class="proto-org">LITGRID AB</div><div style="font-size:11px;color:#555;margin-top:2px">Elektros energijos perdavimo sistemos operatorius</div></div>' +
+    '<div class="proto-doc">Pirkimo komisijos sprendimas<br>Data: <b>'+dateStr+'</b><br>Nr.: <b>'+piNr+'</b></div></div>' +
+    '<div class="proto-title"><h2>Ekonomiškai naudingiausio pasiūlymo vertinimo protokolas</h2><p>'+piName+'</p></div>' +
+    '<div class="proto-meta">' +
+      '<div><div class="pm-lbl">Pirkimo pavadinimas</div><div class="pm-val">'+piName+'</div></div>' +
+      '<div><div class="pm-lbl">Pirkimo numeris</div><div class="pm-val">'+piNr+'</div></div>' +
+      '<div><div class="pm-lbl">Gauta pasiūlymų</div><div class="pm-val">'+suppliers.length+' ('+valid.length+' tinkamų, '+rej.length+' atmesta)</div></div>' +
+      '<div><div class="pm-lbl">Numatoma vertė</div><div class="pm-val">'+(piValue?f(parseFloat(piValue))+' EUR be PVM':'—')+'</div></div>' +
+    '</div>' +
+    riskHtml+
+    '<div class="proto-section"><h3>Pasiūlymų vertinimo rezultatai</h3>' +
+      '<table class="ptable"><thead><tr>' +
+        '<th style="text-align:left;width:34px">Eilė</th><th style="text-align:left">Tiekėjas</th>' +
+        '<th>1 et. EUR</th><th>2 et. EUR</th><th>WP EUR</th>' +
+        '<th>A /63</th><th>B /10</th><th>C /17</th><th>D /5</th><th>E /5</th>' +
+        '<th>EN /100</th><th>vs. vid.</th>' +
+      '</tr></thead><tbody>'+trows+'</tbody></table></div>' +
+    (winner?
+      '<div class="proto-section"><h3>Komisijos sprendimas</h3>' +
+      '<p style="font-size:13px;line-height:1.8">Atlikus pasiūlymų vertinimą pagal ekonomiškai naudingiausio pasiūlymo kriterijus, komisija konstatuoja, kad <b>'+winner.s.name+'</b> pateikė ekonomiškai naudingiausią pasiūlymą — <b>'+f(winner.sc.EN,2)+' balo</b> iš 100 galimų. Bendra pasiūlyta kaina: <b>'+fe(winner.sc.k1+winner.sc.k2)+'</b> (1 etapas: '+fe(winner.sc.k1)+', 2 etapas: '+fe(winner.sc.k2)+').</p>' +
+      '<p style="font-size:13px;margin-top:8px">Siūloma sudaryti viešojo pirkimo sutartį su <b>'+winner.s.name+'</b>.</p></div>' : '')+
+    '<div class="proto-section"><h3>Vertinimo metodas</h3>' +
+      '<p style="font-size:12px;color:#444;line-height:1.8">Kainos kriterijus (A): WP = (K₁ × 0,30) + (K₂ × 0,70); A = 63 × (WPmin / WPp). Pristatymo terminas (B): ≤3 mėn.=10 pt, 4 mėn.=5 pt, 5 mėn.=0 pt. Interviu (C): C = 17 × (CT/17); slenkstis CT=8 pt. MS Active Directory (D): Taip=5 pt. Meteostotis (E): Taip=5 pt.</p></div>' +
+    '<div class="sign-grid">' +
+      '<div class="sign-item"><div class="sign-role">Komisijos pirmininkas</div><div class="sign-line"></div><div style="font-size:10px;color:#888">Vardas, parašas, data</div></div>' +
+      '<div class="sign-item"><div class="sign-role">Komisijos narys</div><div class="sign-line"></div><div style="font-size:10px;color:#888">Vardas, parašas, data</div></div>' +
+      '<div class="sign-item"><div class="sign-role">Komisijos narys</div><div class="sign-line"></div><div style="font-size:10px;color:#888">Vardas, parašas, data</div></div>' +
+    '</div>' +
+    '<div class="proto-footer"><span>Sugeneruota: '+new Date().toLocaleString('lt-LT')+'</span><span>Litgrid AB · Pirkimų skyrius · DAS-TPI vertinimo įrankis v2</span></div>';
+
+  document.getElementById('modalOverlay').className='modal-overlay open';
+}
+function closeModal(){document.getElementById('modalOverlay').className='modal-overlay';}
+
+// Demo data
+addSupplier();addSupplier();addSupplier();
+suppliers[0].name='UAB Sensorika';suppliers[0].k1=30000;suppliers[0].k2=200000;suppliers[0].delivery=3;suppliers[0].interview=12;suppliers[0].adYes=true;suppliers[0].meteoYes=false;
+suppliers[1].name='UAB TechVision';suppliers[1].k1=20000;suppliers[1].k2=215000;suppliers[1].delivery=4;suppliers[1].interview=7;suppliers[1].adYes=true;suppliers[1].meteoYes=true;
+suppliers[2].name='UAB DroneGuard';suppliers[2].k1=50000;suppliers[2].k2=180000;suppliers[2].delivery=3;suppliers[2].interview=10;suppliers[2].adYes=false;suppliers[2].meteoYes=true;
+renderAll();
+</script>
+</body>
+</html>
